@@ -1,0 +1,81 @@
+{
+  "fill": {
+    "linear-gradient": [
+      "extended-srgb:0.38431,0.76078,0.85098,1.00000",
+      "extended-srgb:0.07451,0.39608,0.47451,1.00000"
+    ],
+    "orientation": {
+      "start": {
+        "x": 0.5,
+        "y": 0
+      },
+      "stop": {
+        "x": 0.5,
+        "y": 1
+      }
+    }
+  },
+  "groups": [
+    {
+      "name": "Dots",
+      "layers": [
+        {
+          "name": "dots",
+          "image-name": "dots.svg",
+          "glass": false,
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "extended-srgb:1.00000,1.00000,1.00000,0.90000"
+              }
+            }
+          ]
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0
+      },
+      "translucency": {
+        "enabled": false,
+        "value": 0
+      }
+    },
+    {
+      "name": "Bars",
+      "layers": [
+        {
+          "name": "bar-top",
+          "image-name": "bar-top.svg",
+          "glass": true
+        },
+        {
+          "name": "bar-middle",
+          "image-name": "bar-middle.svg",
+          "glass": true
+        },
+        {
+          "name": "bar-bottom",
+          "image-name": "bar-bottom.svg",
+          "glass": true
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.3
+      },
+      "specular": true,
+      "lighting": "individual"
+    }
+  ],
+  "supported-platforms": {
+    "squares": [
+      "macOS"
+    ]
+  }
+}

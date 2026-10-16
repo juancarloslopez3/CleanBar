@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+DerivedData/
+build/
+
+# Release builds
+*.dmg
+
+# Local notes, not part of the project
+backlog.txt
+README_example.md

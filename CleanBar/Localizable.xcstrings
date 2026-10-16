@@ -1,0 +1,1339 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ (not visible right now)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (no visible ahora)"
+          }
+        }
+      }
+    },
+    "%@ is allowed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permiso de %@ concedido"
+          }
+        }
+      }
+    },
+    "%@ is running. Quit it before using CleanBar, or the two apps will keep moving each other's items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ se está ejecutando. Sal de esa app antes de usar CleanBar o las dos seguirán moviendo los elementos de la otra."
+          }
+        }
+      }
+    },
+    "%@ is running. Quit it, or it and CleanBar will keep moving each other's items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ se está ejecutando. Sal de esa app o CleanBar y ella seguirán moviendo los elementos de la otra."
+          }
+        }
+      }
+    },
+    "%@ will also hide whenever CleanBar hides icons: macOS only tells apart apps in the Applications folder or in /Library." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos de %@ también se ocultarán siempre que CleanBar oculte iconos: macOS solo distingue las apps de la carpeta Aplicaciones o de /Library."
+          }
+        }
+      }
+    },
+    "A simple menu bar organizer." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un organizador para la barra de menús simple."
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acerca de"
+          }
+        }
+      }
+    },
+    "Accessibility" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accesibilidad"
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir"
+          }
+        }
+      }
+    },
+    "Allow CleanBar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir CleanBar"
+          }
+        }
+      }
+    },
+    "Allowed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitido"
+          }
+        }
+      }
+    },
+    "Always in the menu bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siempre en la barra de menús"
+          }
+        }
+      }
+    },
+    "Appearance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspecto"
+          }
+        }
+      }
+    },
+    "Apps hide as a whole, so an app's icons move together. macOS's own icons hide one by one, except the clock." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las apps se ocultan enteras, así que los iconos de una app se mueven juntos. Los iconos propios de macOS se ocultan uno a uno, salvo el reloj."
+          }
+        }
+      }
+    },
+    "Arrow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flecha"
+          }
+        }
+      }
+    },
+    "Automatic" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automático"
+          }
+        }
+      }
+    },
+    "Check for Updates…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar actualizaciones…"
+          }
+        }
+      }
+    },
+    "Choose whether CleanBar opens at login, its language and appearance, its icon, how hidden icons show and when they go away again, and the shortcut that shows them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige si CleanBar se abre al iniciar sesión, su idioma y aspecto, su icono, cómo se muestran los iconos ocultos y cuándo vuelven a ocultarse, y el atajo que los muestra."
+          }
+        }
+      }
+    },
+    "Circle" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Círculo"
+          }
+        }
+      }
+    },
+    "CleanBar" : {
+      "shouldTranslate" : false
+    },
+    "CleanBar can read and move your menu bar icons now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar ya puede leer y mover los iconos de tu barra de menús."
+          }
+        }
+      }
+    },
+    "CleanBar can take pictures of your menu bar icons now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar ya puede tomar imágenes de los iconos de tu barra de menús."
+          }
+        }
+      }
+    },
+    "CleanBar can't hide “%@”: macOS doesn't say which app it belongs to." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar no puede ocultar «%@»: macOS no indica a qué app pertenece."
+          }
+        }
+      }
+    },
+    "CleanBar is moving a new icon into place. Try again in a moment." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar está colocando un icono nuevo. Vuelve a intentarlo en un momento."
+          }
+        }
+      }
+    },
+    "CleanBar is running from %@, so it isn't hiding anything: macOS only recognizes CleanBar's own icon in the Applications folder, and would hide it too. Move CleanBar there." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar se está ejecutando desde %@, así que no oculta nada: macOS solo reconoce el icono de CleanBar si está en la carpeta Aplicaciones, y también lo ocultaría. Mueve CleanBar allí."
+          }
+        }
+      }
+    },
+    "CleanBar needs the Accessibility permission to read and move menu bar items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar necesita el permiso de Accesibilidad para leer y mover los elementos de la barra de menús."
+          }
+        }
+      }
+    },
+    "CleanBar needs two permissions to work. Press the Allow button next to each permission to open System Settings, then drag CleanBar's icon into the list to grant it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar necesita dos permisos para funcionar. Pulsa el botón Permitir junto a cada permiso para abrir Ajustes del Sistema y arrastra el icono de CleanBar a la lista para concederlo."
+          }
+        }
+      }
+    },
+    "CleanBar switches to this language when it restarts." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar cambiará a este idioma cuando se reinicie."
+          }
+        }
+      }
+    },
+    "CleanBar waits while the pointer is in the menu bar or a menu is open." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar espera mientras el puntero está en la barra de menús o hay un menú abierto."
+          }
+        }
+      }
+    },
+    "CleanBar waits while the pointer is over the floating bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar espera mientras el puntero está sobre la barra flotante."
+          }
+        }
+      }
+    },
+    "CleanBar — click to show or hide icons, right-click for options" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar — haz clic para mostrar u ocultar iconos, o clic secundario para ver opciones"
+          }
+        }
+      }
+    },
+    "CleanBar's icon always stays in the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El icono de CleanBar siempre se queda en la barra de menús."
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacer clic en un espacio vacío de la barra de menús"
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar or press your shortcut to see the menu bar without the hidden icons. They come back when you move an icon or click Refresh, and hide again when this window closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un espacio vacío de la barra de menús o pulsa tu atajo para ver la barra de menús sin los iconos ocultos. Vuelven cuando mueves un icono o haces clic en Actualizar, y se ocultan de nuevo al cerrar esta ventana."
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar to see them in a bar below it, and again to close it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un espacio vacío de la barra de menús para verlos en una barra debajo, y otra vez para cerrarla."
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar to show them where they were, and again to hide them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un espacio vacío de la barra de menús para mostrarlos donde estaban, y otra vez para ocultarlos."
+          }
+        }
+      }
+    },
+    "Click an icon in the bar to open its menu: the icon comes back at the left end of the menu bar icons until the menu closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un icono de la barra para abrir su menú: el icono vuelve al extremo izquierdo de los iconos de la barra de menús hasta que el menú se cierra."
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacer clic en el icono de CleanBar"
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon or press your shortcut to see the menu bar without the hidden icons. They come back when you move an icon or click Refresh, and hide again when this window closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en el icono de CleanBar o pulsa tu atajo para ver la barra de menús sin los iconos ocultos. Vuelven cuando mueves un icono o haces clic en Actualizar, y se ocultan de nuevo al cerrar esta ventana."
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon or press your shortcut to see them in a bar below it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en el icono de CleanBar o pulsa tu atajo para verlos en una barra debajo de él."
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon or press your shortcut to show them where they were." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en el icono de CleanBar o pulsa tu atajo para mostrarlos donde estaban."
+          }
+        }
+      }
+    },
+    "Click, then press the keys of your shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic y pulsa las teclas de tu atajo"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        }
+      }
+    },
+    "Close Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar Ajustes"
+          }
+        }
+      }
+    },
+    "Close Settings so CleanBar can work as expected" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cierra Ajustes para que CleanBar funcione como debe"
+          }
+        }
+      }
+    },
+    "Dark" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscuro"
+          }
+        }
+      }
+    },
+    "Developed by Juan Carlos López." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desarrollado por Juan Carlos López."
+          }
+        }
+      }
+    },
+    "Dimmed icons are behind Apple's « because the menu bar is full. Click Refresh to bring them out." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos atenuados están detrás del « de Apple porque la barra de menús está llena. Haz clic en Actualizar para sacarlos."
+          }
+        }
+      }
+    },
+    "Dot" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Punto"
+          }
+        }
+      }
+    },
+    "Drag CleanBar into the list above" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra CleanBar a la lista de arriba"
+          }
+        }
+      }
+    },
+    "Drag icons between Shown and Hidden to choose which ones CleanBar hides. While this window is open, hidden icons are showing." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra iconos entre Visibles y Ocultos para elegir cuáles oculta CleanBar. Mientras esta ventana está abierta, los iconos ocultos se muestran."
+          }
+        }
+      }
+    },
+    "Drag into the list in System Settings to allow CleanBar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrástralo a la lista de Ajustes del Sistema para permitir CleanBar."
+          }
+        }
+      }
+    },
+    "Drag “New icons appear here” to where icons of apps CleanBar hasn't seen before should go." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra «Aquí aparecen los iconos nuevos» adonde deban ir los iconos de las apps que CleanBar no ha visto antes."
+          }
+        }
+      }
+    },
+    "Drop an icon on another one to put it in front of it in the menu bar, or ⌘-drag icons there yourself." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suelta un icono sobre otro para ponerlo delante de él en la barra de menús, o arrastra tú mismo los iconos allí con ⌘."
+          }
+        }
+      }
+    },
+    "Drop icons here" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suelta iconos aquí"
+          }
+        }
+      }
+    },
+    "Drop icons here to hide them" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suelta iconos aquí para ocultarlos"
+          }
+        }
+      }
+    },
+    "Dropping it there allows Accessibility. If CleanBar is already in the list, turn it on instead." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al soltarlo ahí, se permite Accesibilidad. Si CleanBar ya está en la lista, actívalo en su lugar."
+          }
+        }
+      }
+    },
+    "Dropping it there allows Screen Recording, and macOS then asks to reopen CleanBar. If CleanBar is already in the list, turn it on instead." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al soltarlo ahí, se permite Grabación de pantalla y después macOS pide volver a abrir CleanBar. Si CleanBar ya está en la lista, actívalo en su lugar."
+          }
+        }
+      }
+    },
+    "Edit Menu Bar Layout" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar la barra de menús"
+          }
+        }
+      }
+    },
+    "From 1 to 60 seconds" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De 1 a 60 segundos"
+          }
+        }
+      }
+    },
+    "General" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        }
+      }
+    },
+    "Hidden" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultos"
+          }
+        }
+      }
+    },
+    "Hidden Icons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iconos ocultos"
+          }
+        }
+      }
+    },
+    "Hidden icons leave the menu bar completely." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos ocultos desaparecen por completo de la barra de menús."
+          }
+        }
+      }
+    },
+    "Hide after" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar tras"
+          }
+        }
+      }
+    },
+    "Hide icons again automatically" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a ocultar los iconos automáticamente"
+          }
+        }
+      }
+    },
+    "Hide the CleanBar icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar el icono de CleanBar"
+          }
+        }
+      }
+    },
+    "Hover over an empty space in the menu bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasar el puntero sobre un espacio vacío de la barra de menús"
+          }
+        }
+      }
+    },
+    "Icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icono"
+          }
+        }
+      }
+    },
+    "Icons of apps CleanBar hasn't seen before go here. CleanBar ⌘-drags them into place, so the pointer jumps there for a moment. Icons already in the menu bar stay where they are." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos de las apps que CleanBar no ha visto antes van aquí. CleanBar los coloca arrastrándolos con ⌘, así que el puntero salta allí un momento. Los iconos que ya están en la barra de menús se quedan donde están."
+          }
+        }
+      }
+    },
+    "Icons of apps CleanBar hasn't seen before go to this row, where macOS puts them. Drop this on an icon to have them go in front of it, or on a row's empty space to have them go at its end." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos de las apps que CleanBar no ha visto antes van a esta fila, donde macOS los pone. Suelta esto sobre un icono para que vayan delante de él, o en el espacio vacío de una fila para que vayan al final."
+          }
+        }
+      }
+    },
+    "If a permission is on in System Settings but still missing here, reset it. CleanBar removes it from System Settings and restarts, then you allow it again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si un permiso está activado en Ajustes del Sistema pero aquí sigue faltando, restablécelo. CleanBar lo elimina de Ajustes del Sistema y se reinicia, y luego vuelves a permitirlo."
+          }
+        }
+      }
+    },
+    "In a Floating Bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En una barra flotante"
+          }
+        }
+      }
+    },
+    "In the Menu Bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la barra de menús"
+          }
+        }
+      }
+    },
+    "Keyboard Shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atajo de teclado"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma"
+          }
+        }
+      }
+    },
+    "Lets CleanBar see your menu bar icons, move them for you and open Notification Center when you click the clock while icons are hidden." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite a CleanBar ver los iconos de tu barra de menús, moverlos por ti y abrir el Centro de notificaciones al hacer clic en el reloj mientras hay iconos ocultos."
+          }
+        }
+      }
+    },
+    "Lets CleanBar take pictures of your menu bar icons for the layout editor. Nothing is recorded or saved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite a CleanBar tomar imágenes de los iconos de tu barra de menús para el editor de la barra de menús. No se graba ni se guarda nada."
+          }
+        }
+      }
+    },
+    "Light" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
+          }
+        }
+      }
+    },
+    "Menu Bar Icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icono de la barra de menús"
+          }
+        }
+      }
+    },
+    "Menu Bar Layout" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra de menús"
+          }
+        }
+      }
+    },
+    "New icons appear here" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquí aparecen los iconos nuevos"
+          }
+        }
+      }
+    },
+    "No hidden icons right now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay iconos ocultos ahora mismo"
+          }
+        }
+      }
+    },
+    "Not allowed in the menu bar, under System Settings → Menu Bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No permitidos en la barra de menús, en Ajustes del Sistema → Barra de menús"
+          }
+        }
+      }
+    },
+    "Open CleanBar at login" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir CleanBar al iniciar sesión"
+          }
+        }
+      }
+    },
+    "Open CleanBar's page on GitHub" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir la página de CleanBar en GitHub"
+          }
+        }
+      }
+    },
+    "Open CleanBar's releases on GitHub" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir las versiones de CleanBar en GitHub"
+          }
+        }
+      }
+    },
+    "Open Login Items" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ítems de inicio"
+          }
+        }
+      }
+    },
+    "Open Menu Bar Settings…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ajustes de la barra de menús…"
+          }
+        }
+      }
+    },
+    "Open Permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Permisos"
+          }
+        }
+      }
+    },
+    "Out of the menu bar until you show them" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuera de la barra de menús hasta que los muestres"
+          }
+        }
+      }
+    },
+    "Permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permisos"
+          }
+        }
+      }
+    },
+    "Press the keys of your shortcut, or Escape to cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa las teclas de tu atajo, o Esc para cancelar"
+          }
+        }
+      }
+    },
+    "Press your shortcut to see the menu bar without the hidden icons. They come back when you move an icon or click Refresh, and hide again when this window closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa tu atajo para ver la barra de menús sin los iconos ocultos. Vuelven cuando mueves un icono o haces clic en Actualizar, y se ocultan de nuevo al cerrar esta ventana."
+          }
+        }
+      }
+    },
+    "Quit CleanBar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir de CleanBar"
+          }
+        }
+      }
+    },
+    "Read the menu bar again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a leer la barra de menús"
+          }
+        }
+      }
+    },
+    "Reading your menu bar…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leyendo tu barra de menús…"
+          }
+        }
+      }
+    },
+    "Record Shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grabar atajo"
+          }
+        }
+      }
+    },
+    "Refresh" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizar"
+          }
+        }
+      }
+    },
+    "Remove shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar atajo"
+          }
+        }
+      }
+    },
+    "Reset Permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer permisos"
+          }
+        }
+      }
+    },
+    "Rest the pointer on an empty space in the menu bar to see them in a bar below it. The bar closes once the pointer has left it and the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja el puntero sobre un espacio vacío de la barra de menús para verlos en una barra debajo. La barra se cierra cuando el puntero sale de ella y de la barra de menús."
+          }
+        }
+      }
+    },
+    "Rest the pointer on an empty space in the menu bar to show them where they were. They go again once the pointer has left the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja el puntero sobre un espacio vacío de la barra de menús para mostrarlos donde estaban. Vuelven a ocultarse cuando el puntero sale de la barra de menús."
+          }
+        }
+      }
+    },
+    "Restart Now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar ahora"
+          }
+        }
+      }
+    },
+    "Screen Recording" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grabación de pantalla"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        }
+      }
+    },
+    "Settings Open" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes abiertos"
+          }
+        }
+      }
+    },
+    "Show hidden icons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar iconos ocultos"
+          }
+        }
+      }
+    },
+    "Show or hide hidden icons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar u ocultar los iconos ocultos"
+          }
+        }
+      }
+    },
+    "Show them when you" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrarlos al"
+          }
+        }
+      }
+    },
+    "Shown" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibles"
+          }
+        }
+      }
+    },
+    "Space" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espacio"
+          }
+        }
+      }
+    },
+    "Star" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estrella"
+          }
+        }
+      }
+    },
+    "Star on GitHub" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dar una estrella en GitHub"
+          }
+        }
+      }
+    },
+    "Startup" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicio"
+          }
+        }
+      }
+    },
+    "System Language (%@)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma del sistema (%@)"
+          }
+        }
+      }
+    },
+    "The CleanBar icon and your shortcut work too." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El icono de CleanBar y tu atajo también funcionan."
+          }
+        }
+      }
+    },
+    "The clock always stays in the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El reloj siempre se queda en la barra de menús."
+          }
+        }
+      }
+    },
+    "This version of macOS doesn't let CleanBar hide icons. CleanBar needs macOS 27." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta versión de macOS no permite que CleanBar oculte iconos. CleanBar necesita macOS 27."
+          }
+        }
+      }
+    },
+    "Three Dots" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tres puntos"
+          }
+        }
+      }
+    },
+    "Tips" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consejos"
+          }
+        }
+      }
+    },
+    "To come back to these settings, open CleanBar again from Spotlight or the Applications folder." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para volver a estos ajustes, abre CleanBar de nuevo desde Spotlight o la carpeta Aplicaciones."
+          }
+        }
+      }
+    },
+    "Turned Off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivados"
+          }
+        }
+      }
+    },
+    "Type a shortcut…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa un atajo…"
+          }
+        }
+      }
+    },
+    "Version %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión %@"
+          }
+        }
+      }
+    },
+    "While Menu Bar Layout is open, hidden icons only show and hide in the menu bar, where it can read and move them, and they stay until you hide them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mientras el editor de la barra de menús está abierto, los iconos ocultos solo se muestran y se ocultan en la barra de menús, donde puede leerlos y moverlos, y se quedan hasta que los ocultes."
+          }
+        }
+      }
+    },
+    "Your shortcut works too." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu atajo también funciona."
+          }
+        }
+      }
+    },
+    "macOS didn't let CleanBar move “%@”. Some system items, like the clock and Control Center, can't be moved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS no ha dejado que CleanBar mueva «%@». Algunos elementos del sistema, como el reloj y el Centro de control, no se pueden mover."
+          }
+        }
+      }
+    },
+    "macOS doesn't let CleanBar hide “%@”. Of macOS's own icons, CleanBar can hide Wi-Fi, Bluetooth, Battery, Sound, Display, Keyboard Brightness, Screen Mirroring and Control Center." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS no deja que CleanBar oculte «%@». De los iconos propios de macOS, CleanBar puede ocultar Wi‑Fi, Bluetooth, Batería, Sonido, Pantalla, Brillo del teclado, Duplicación de pantalla y Centro de control."
+          }
+        }
+      }
+    },
+    "macOS needs you to allow CleanBar in Login Items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS necesita que permitas CleanBar en Ítems de inicio."
+          }
+        }
+      }
+    },
+    "macOS system item" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento del sistema macOS"
+          }
+        }
+      }
+    },
+    "second" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "segundo"
+          }
+        }
+      }
+    },
+    "seconds" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "segundos"
+          }
+        }
+      }
+    },
+    "“%@” isn't in the menu bar right now, so it can't be moved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» no está en la barra de menús ahora mismo, así que no se puede mover."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
