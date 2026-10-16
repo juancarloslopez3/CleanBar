@@ -71,6 +71,7 @@ CleanBar is a menu-bar agent: after launch, look for it in the menu bar, not the
 - **Apps outside /Applications and /Library** can't be told apart by macOS, so their icons hide whenever CleanBar hides icons. The editor names them.
 - **Notification Center** won't open on its own while icons are hidden. CleanBar catches your click on the clock and opens it for you, so hidden icons may twitch for a moment.
 - **Crowded menu bars** — if the icons you keep don't fit, macOS still puts some behind its button («).
+- **Floating bar pictures aren't live** — an icon that changes by itself (a CPU graph, a timer) looks the way it did when CleanBar last saw it. The first time an app with hidden icons opens, its icon shows in the menu bar for about a second so CleanBar can picture it.
 
 ## Building from source
 
