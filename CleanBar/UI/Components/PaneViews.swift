@@ -6,6 +6,9 @@ struct SymbolBadge: View {
     let tint: Color
     var size: CGFloat = 20
 
+    /// A symbol in proportion to a badge this small would be too thin and tiny to tell apart.
+    private var isSmall: Bool { size < 20 }
+
     var body: some View {
         RoundedRectangle(cornerRadius: size * 0.24, style: .continuous)
             .fill(tint.gradient)
@@ -15,7 +18,7 @@ struct SymbolBadge: View {
             }
             .overlay {
                 Image(systemName: symbol)
-                    .font(.system(size: size * 0.52, weight: .medium))
+                    .font(.system(size: size * (isSmall ? 0.62 : 0.52), weight: isSmall ? .semibold : .medium))
                     .foregroundStyle(.white)
             }
             .frame(width: size, height: size)

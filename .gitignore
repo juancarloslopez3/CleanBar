@@ -8,7 +8,7 @@ build/
 
 # Release builds
 *.dmg
+dist/
 
 # Local notes, not part of the project
-backlog.txt
-README_example.md
+BACKLOG.md

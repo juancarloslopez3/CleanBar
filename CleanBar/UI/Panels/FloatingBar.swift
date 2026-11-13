@@ -6,11 +6,6 @@ nonisolated struct ItemClick: Sendable {
     var isRightClick = false
     var modifiers: NSEvent.ModifierFlags = []
 
-    /// A left click without modifier keys, which an Accessibility press can stand in for.
-    var isPlain: Bool {
-        !isRightClick && modifiers.isDisjoint(with: .shortcutKeys)
-    }
-
     var eventFlags: CGEventFlags {
         var flags: CGEventFlags = []
         if modifiers.contains(.command) { flags.insert(.maskCommand) }
@@ -57,6 +52,7 @@ final class FloatingBar {
     /// Where across the screen the bar grows out of: below CleanBar's icon or the pointer, within `openFrame`.
     private var originX: CGFloat = 0
     private var motion: Motion?
+    private var openedDate = Date.distantPast
     private lazy var ticker = FrameTicker { [weak self] now, time in self?.step(now: now, at: time) }
 
     /// Room around the icons. With the bar's ends fully rounded, it keeps an icon's highlight the same shape as the bar.
@@ -64,6 +60,7 @@ final class FloatingBar {
     /// Space between the menu bar and the bar.
     private static let gap: CGFloat = 5
     private static let screenMargin: CGFloat = 8
+    private static let openingClickTime = 0.4
 
     init(title: String = String(localized: "Hidden Icons")) {
         self.title = title
@@ -103,6 +100,7 @@ final class FloatingBar {
 
         let isOpening = !isOpen
         if isOpening {
+            openedDate = .now
             // A new session, so no icon starts out highlighted from the last time, and they all come out again.
             session += 1
         }
@@ -174,8 +172,19 @@ final class FloatingBar {
             (.default, NSApplication.didChangeScreenParametersNotification),
         ]
         observers = closingNotifications.map { center, name in
-            let observer = center.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
-                MainActor.assumeIsolated { self?.close() }
+            let observer = center.addObserver(forName: name, object: nil, queue: .main) { [weak self] notification in
+                // CleanBar coming back to the front isn't another app, as when a click on its icon opens this.
+                let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication
+                guard app?.processIdentifier != ProcessInfo.processInfo.processIdentifier else { return }
+                MainActor.assumeIsolated {
+                    // Nor is it another app coming to the front by itself right after opening: that's the click that opened this,
+                    // which sends the front to the app that owns the menu bar, and a quick click ends before CleanBar hears of it.
+                    if let self, name == NSWorkspace.didActivateApplicationNotification,
+                       Date.now.timeIntervalSince(self.openedDate) < Self.openingClickTime {
+                        return
+                    }
+                    self?.close()
+                }
             }
             return (center, observer)
         }
@@ -324,55 +333,6 @@ final class FloatingBar {
         self.glass = glass
         self.hostingView = hostingView
         return panel
-    }
-}
-
-/// A panel that floats over other apps' windows without taking the keyboard or making CleanBar the active app, so the app
-/// in front keeps both: the floating bar, and the panel that helps allow a permission.
-final class NonactivatingPanel: NSPanel {
-    init(title: String, level: NSWindow.Level) {
-        super.init(contentRect: .zero, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: true)
-        isFloatingPanel = true
-        self.level = level
-        backgroundColor = .clear
-        isOpaque = false
-        hasShadow = true
-        hidesOnDeactivate = false
-        isReleasedWhenClosed = false
-        animationBehavior = .none
-        collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary, .ignoresCycle, .transient]
-        allowsToolTipsWhenApplicationIsInactive = true
-        setAccessibilityTitle(title)
-    }
-
-    override var canBecomeKey: Bool { false }
-    override var canBecomeMain: Bool { false }
-}
-
-/// Calls back once for every refresh of a screen while it runs, with the time the refresh started and the time it
-/// shows up.
-final class FrameTicker: NSObject {
-    private let onFrame: (_ now: CFTimeInterval, _ target: CFTimeInterval) -> Void
-    private var link: CADisplayLink?
-
-    init(onFrame: @escaping (_ now: CFTimeInterval, _ target: CFTimeInterval) -> Void) {
-        self.onFrame = onFrame
-    }
-
-    func start(on screen: NSScreen?) {
-        guard link == nil, let screen = screen ?? NSScreen.main else { return }
-        let link = screen.displayLink(target: self, selector: #selector(refresh))
-        link.add(to: .main, forMode: .common)
-        self.link = link
-    }
-
-    func stop() {
-        link?.invalidate()
-        link = nil
-    }
-
-    @objc private func refresh(_ link: CADisplayLink) {
-        onFrame(link.timestamp, link.targetTimestamp)
     }
 }
 
@@ -544,80 +504,5 @@ private struct FloatingBarNoteRow: View {
         // The bar's padding is 4 points wider at its ends than at its top and bottom.
         .padding(.leading, (rowHeight - Self.badgeSize) / 2 - 4)
         .frame(height: rowHeight)
-    }
-}
-
-/// Takes the clicks on an icon, or on a button in a panel that never makes CleanBar active (a note's button, the close
-/// button of the panel that helps allow a permission). SwiftUI's buttons can't tell a right click, and in a window of an
-/// app that's never active, only tracking areas that are always on notice the pointer.
-struct ClickArea: NSViewRepresentable {
-    let name: String
-    @Binding var isHovered: Bool
-    @Binding var isPressed: Bool
-    let onClick: (ItemClick) -> Void
-
-    func makeNSView(context: Context) -> ClickAreaView {
-        ClickAreaView()
-    }
-
-    func updateNSView(_ view: ClickAreaView, context: Context) {
-        view.toolTip = name
-        view.setAccessibilityLabel(name)
-        view.onHover = { isHovered = $0 }
-        view.onPress = { isPressed = $0 }
-        view.onClick = onClick
-    }
-}
-
-final class ClickAreaView: NSView {
-    var onHover: (Bool) -> Void = { _ in }
-    var onPress: (Bool) -> Void = { _ in }
-    var onClick: (ItemClick) -> Void = { _ in }
-
-    override init(frame: NSRect) {
-        super.init(frame: frame)
-        setAccessibilityElement(true)
-        setAccessibilityRole(.button)
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
-    // CleanBar is never the active app, so every click is a first click.
-    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
-
-    override func updateTrackingAreas() {
-        super.updateTrackingAreas()
-        trackingAreas.forEach(removeTrackingArea)
-        addTrackingArea(NSTrackingArea(rect: .zero, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect], owner: self))
-    }
-
-    override func mouseEntered(with event: NSEvent) { onHover(true) }
-    override func mouseExited(with event: NSEvent) { onHover(false) }
-
-    override func mouseDown(with event: NSEvent) { onPress(true) }
-    override func mouseDragged(with event: NSEvent) { onPress(contains(event)) }
-    override func mouseUp(with event: NSEvent) { release(event, isRightClick: false) }
-
-    override func rightMouseDown(with event: NSEvent) { onPress(true) }
-    override func rightMouseDragged(with event: NSEvent) { onPress(contains(event)) }
-    override func rightMouseUp(with event: NSEvent) { release(event, isRightClick: true) }
-
-    override func accessibilityPerformPress() -> Bool {
-        onClick(ItemClick())
-        return true
-    }
-
-    /// The icon opens when the button is let go over it, so the menu doesn't open under a pressed button, which would
-    /// choose whatever menu item the release lands on.
-    private func release(_ event: NSEvent, isRightClick: Bool) {
-        onPress(false)
-        guard contains(event) else { return }
-        onClick(ItemClick(isRightClick: isRightClick, modifiers: event.modifierFlags))
-    }
-
-    private func contains(_ event: NSEvent) -> Bool {
-        bounds.contains(convert(event.locationInWindow, from: nil))
     }
 }

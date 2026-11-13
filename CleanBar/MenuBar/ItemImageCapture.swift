@@ -46,11 +46,10 @@ nonisolated struct ItemPicture: Sendable {
 /// On macOS 27.0.1 the menu bar is a single window of Window Server's, "Menubar", at the main menu window level; the
 /// apps' items have no windows of their own.
 ///
-/// macOS slides the icons over when one comes, goes or changes size, and Accessibility reports where they're going
-/// straight away (seen on macOS 27.0.1 as CleanBar starts: its own icon comes in and the icons left of it move 38 points
-/// at once). A picture taken meanwhile cuts the menu bar in the wrong places, giving an icon half of itself, the gap
-/// next to it or its neighbor. So the items are pictured a moment after they're found where they were read, and only
-/// those still there afterwards keep their picture.
+/// macOS slides the icons over when one comes, goes or changes size, as CleanBar's own does when it starts, and
+/// Accessibility reports where they're going straight away. A picture taken meanwhile cuts the menu bar in the wrong
+/// places, giving an icon half of itself, the gap next to it or its neighbor. So the items are pictured a moment after
+/// they're found where they were read, and only those still there afterwards keep their picture.
 enum ItemImageCapture {
     /// Long enough for the icons to finish sliding over.
     static let settleTime = Duration.milliseconds(500)

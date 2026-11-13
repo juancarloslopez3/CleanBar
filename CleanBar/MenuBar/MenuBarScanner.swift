@@ -67,9 +67,16 @@ nonisolated enum MenuBarScanner {
         AXUIElementSetMessagingTimeout(systemWide, 0.5)
         var items: [MenuBarItem] = []
         var overflowButton: OverflowButton?
+        var appsWithoutItems: Set<String> = []
 
         for target in targets {
-            guard let extras = AX.element(AX.application(target.pid), "AXExtrasMenuBar") else { continue }
+            let (extras, hasNone) = extrasMenuBar(of: target.pid)
+            guard let extras else {
+                if hasNone, let bundleID = target.bundleID {
+                    appsWithoutItems.insert(bundleID)
+                }
+                continue
+            }
             let isOwn = target.pid == ownPID
 
             for (index, child) in AX.children(extras).enumerated() {
@@ -79,7 +86,8 @@ nonisolated enum MenuBarScanner {
                 if target.bundleID == menuBarAgentBundleID, AX.string(child, "AXRole") == "AXButton" {
                     overflowButton = OverflowButton(
                         frame: frame,
-                        isOnScreen: isDisplayed(child, frame: frame, pid: target.pid, systemWide: systemWide)
+                        isOnScreen: isDisplayed(child, frame: frame, pid: target.pid, systemWide: systemWide),
+                        isExpanded: OverflowButton.isExpanded(identifier: AX.string(child, "AXIdentifier"))
                     )
                     continue
                 }
@@ -92,8 +100,10 @@ nonisolated enum MenuBarScanner {
                     .compactMap { $0 }
                     .first { !$0.isEmpty }
 
+                // CleanBar's own items go by name: taking the temperature out of the menu bar changes the positions.
+                let role = isOwn ? identifier.flatMap(ControlRole.init(rawValue:)) : nil
                 items.append(MenuBarItem(
-                    id: "\(target.bundleID ?? "pid-\(target.pid)")#\(index)",
+                    id: "\(target.bundleID ?? "pid-\(target.pid)")#\(role?.rawValue ?? String(index))",
                     pid: target.pid,
                     axIndex: index,
                     bundleID: target.bundleID,
@@ -104,12 +114,28 @@ nonisolated enum MenuBarScanner {
                     frame: frame,
                     strip: strip,
                     isOnScreen: strip != nil && isDisplayed(child, frame: frame, pid: target.pid, systemWide: systemWide),
-                    controlRole: isOwn ? identifier.flatMap(ControlRole.init(rawValue:)) : nil,
+                    controlRole: role,
                     supportsPress: AX.actions(child).contains("AXPress")
                 ))
             }
         }
-        return MenuBarScan(items: items.sorted { $0.frame.minX < $1.frame.minX }, overflowButton: overflowButton)
+        return MenuBarScan(
+            items: items.sorted { $0.frame.minX < $1.frame.minX },
+            overflowButton: overflowButton,
+            appsWithoutItems: appsWithoutItems
+        )
+    }
+
+    /// The parent of an app's menu bar items. `hasNone` when the app answered that it has none: an app with no menu bar
+    /// item, or one that took its item away, as DyNotch does once its icon is turned off in its own settings (seen on
+    /// macOS 27.2). A busy app doesn't answer in time instead, and may well have some.
+    private static func extrasMenuBar(of pid: pid_t) -> (extras: AXUIElement?, hasNone: Bool) {
+        var value: CFTypeRef?
+        let result = AXUIElementCopyAttributeValue(AX.application(pid), "AXExtrasMenuBar" as CFString, &value)
+        guard result == .success, let value, CFGetTypeID(value) == AXUIElementGetTypeID() else {
+            return (nil, result == .noValue || result == .attributeUnsupported)
+        }
+        return ((value as! AXUIElement), false)
     }
 
     /// Hidden items keep reporting their last position, so the position alone can't be trusted. Hit-testing the item
@@ -126,7 +152,9 @@ nonisolated enum MenuBarScanner {
             // macOS's own items are hosted views: the hit test returns an element inside them rather than the item itself.
             var hitPID: pid_t = 0
             AXUIElementGetPid(hit, &hitPID)
-            return hitPID == pid && AX.string(element, "AXRole") != "AXMenuBarItem"
+            guard hitPID == pid, AX.string(element, "AXRole") != "AXMenuBarItem" else { return false }
+            // « is macOS's too, and macOS's own items behind it are stacked onto it: finding « doesn't make them drawn.
+            return AX.string(element, "AXRole") == "AXButton" || AX.string(hit, "AXRole") != "AXButton"
         }
     }
 

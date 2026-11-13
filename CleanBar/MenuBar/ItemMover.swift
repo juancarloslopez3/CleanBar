@@ -11,10 +11,9 @@ import os
 /// wherever the hidden pointer is.
 ///
 /// CleanBar has no menus, so while it's in front the menus in the menu bar are still those of the app in front before
-/// it, and a click or drag in the menu bar switches to that app, whose windows then cover CleanBar's (seen on macOS 27.0.1
-/// with the click on « and with ⌘-drags). When a CleanBar window was in front, CleanBar comes back to the front
-/// afterwards, which leaves « open. Until then the window floats above the other apps' windows, so it doesn't flash away
-/// and back.
+/// it, and a click or drag in the menu bar switches to that app, whose windows then cover CleanBar's. When a CleanBar
+/// window was in front, CleanBar comes back to the front afterwards, which leaves « open. Until then the window floats
+/// above the other apps' windows, so it doesn't flash away and back.
 nonisolated enum ItemMover {
     enum Destination: Sendable {
         case leftOf(CGRect)
@@ -22,7 +21,7 @@ nonisolated enum ItemMover {
     }
 
     /// Marks CleanBar's own events, to tell them from the user's.
-    fileprivate static let eventMark: Int64 = 0x436C_6561_6E42_6172 // "CleanBar"
+    static let eventMark: Int64 = 0x436C_6561_6E42_6172 // "CleanBar"
 
     private static let userInput = UserMouseInput()
 
@@ -64,7 +63,6 @@ nonisolated enum ItemMover {
         }
     }
 
-    /// Clicks at `point`.
     static func click(at point: CGPoint, isRightClick: Bool = false, flags: CGEventFlags = []) async {
         let window = await keepWindowInFront()
         let source = CGEventSource(stateID: .combinedSessionState)
@@ -79,6 +77,19 @@ nonisolated enum ItemMover {
         }
         if let window {
             await comeBackToFront(window)
+        }
+    }
+
+    /// Clicks at `point` straight away, with no pauses and without hiding the pointer, which goes back where it was. For
+    /// a click that can't wait, like the one on the clock while hiding pauses for Notification Center.
+    static func clickNow(at point: CGPoint) {
+        let location = CGEvent(source: nil)?.location
+        let source = CGEventSource(stateID: .hidSystemState)
+        post(.leftMouseDown, at: point, source: source)
+        post(.leftMouseUp, at: point, source: source)
+        if let location, location != point {
+            CGWarpMouseCursorPosition(location)
+            CGAssociateMouseAndMouseCursorPosition(1)
         }
     }
 
