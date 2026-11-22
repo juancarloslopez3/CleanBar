@@ -8,6 +8,8 @@ struct AboutView: View {
     static let releasesURL = repositoryURL.appending(path: "releases")
 
     @Environment(\.openURL) private var openURL
+    @State private var isChecking = false
+    @State private var checkOutcome: UpdateChecker.Outcome?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -24,13 +26,31 @@ struct AboutView: View {
                 .textSelection(.enabled)
                 .padding(.top, 2)
             HStack(spacing: 12) {
-                Button("Check for Updates…") { openURL(Self.releasesURL) }
-                    .help("Open CleanBar's releases on GitHub")
+                Button("Check for Updates…") {
+                    isChecking = true
+                    checkOutcome = nil
+                    Task {
+                        checkOutcome = await UpdateChecker.shared.check()
+                        isChecking = false
+                    }
+                }
+                .disabled(isChecking)
+                .help("Look for a newer version of CleanBar on GitHub")
                 Button("Star on GitHub") { openURL(Self.repositoryURL) }
                     .help("Open CleanBar's page on GitHub")
             }
             .controlSize(.large)
             .padding(.top, 20)
+            Group {
+                switch checkOutcome {
+                case .upToDate: Text("CleanBar is up to date.")
+                case .failed: Text("Couldn't reach GitHub. Try again later.")
+                default: Text(verbatim: " ")
+                }
+            }
+            .font(.callout)
+            .foregroundStyle(.secondary)
+            .padding(.top, 8)
             Divider()
                 .frame(maxWidth: 380)
                 .padding(.vertical, 20)
@@ -58,7 +78,7 @@ struct AboutView: View {
     }
 
     private static var version: String {
-        info["CFBundleShortVersionString"] as? String ?? "1.0"
+        info["CFBundleShortVersionString"] as? String ?? "1.1"
     }
 
     private static var copyright: String? {

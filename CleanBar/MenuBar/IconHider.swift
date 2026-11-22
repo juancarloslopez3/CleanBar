@@ -47,15 +47,14 @@ nonisolated enum SystemMenuItem: Int, CaseIterable, Sendable {
 ///   the user turned off stays off.
 /// - Activating an assertion takes over from the previous one straight away, so the list can change without the hidden
 ///   icons flashing.
-/// - Notification Center doesn't open while an assertion is active, neither from the clock nor with the Show
-///   Notification Center shortcut. Control Center does. MenuBarAgent tells Control Center and Notification Center
-///   whether anything limits the menu bar, and they ignore the clock and the shortcut while something does, whatever
-///   the list (any process's assertion counts). Pressed once they've been told the assertion is gone, the clock opens
-///   Notification Center, and it stays open when an assertion is activated again right after the press.
-///   `RestrictionMonitor` hears the same news, 10–30 ms after `lift()`.
+/// - Notification Center doesn't open while an assertion is active, neither from the clock nor with its shortcut
+///   (Control Center does). MenuBarAgent tells Control Center and Notification Center whether anything limits the menu
+///   bar, whatever the list and whichever process holds it, and they ignore the clock while something does. Clicked once
+///   they've heard the assertion is gone (`RestrictionMonitor` hears it too), the clock opens Notification Center, and
+///   it stays open when an assertion is activated again right after (see `MenuBarManager.openNotificationCenter`).
 /// - After `lift()`, MenuBarAgent brings the hidden icons back and only takes the next list once it has brought them all
-///   back (25–40 ms later), as they start sliding in. A list activated by then takes them out again 5–7 ms later, before
-///   they show much, unless MenuBarAgent is also busy with a click in the menu bar (see `ClockClickTap`).
+///   back (25–40 ms later). A list activated by then takes them out again 5–7 ms later, before they show much, unless
+///   MenuBarAgent is also busy with a click in the menu bar (see `ClockClickTap`).
 final class IconHider {
     private var assertion: AssessmentModeAssertion?
     private(set) var allowedBundleIDs: Set<String>?
@@ -165,10 +164,8 @@ final class IconHider {
 /// Hears from MenuBarAgent whether anything limits the menu bar to a list, the way Control Center and Notification Center
 /// do. It connects to MenuBarAgent's visibility restriction service the way MenuBarClientCore does, through the private
 /// BoardServices framework, but only listens: MenuBarAgent sends every connection the current state (1 while some
-/// assertion is active, 0 once none is) when it connects and whenever it changes.
-///
-/// Seen on macOS 27.0.1: the news comes 10–30 ms after `IconHider.lift()`. Control Center hears it at about the same
-/// time, and a clock press right after it opens Notification Center.
+/// assertion is active, 0 once none is) when it connects and whenever it changes. The news comes 10–30 ms after
+/// `IconHider.lift()`, at about the same time as Control Center hears it.
 nonisolated final class RestrictionMonitor: NSObject, @unchecked Sendable {
     private static let machName = "com.apple.MenuBarAgent.systemservices"
     private static let service = "com.apple.MenuBarAgent.visibility-restriction"

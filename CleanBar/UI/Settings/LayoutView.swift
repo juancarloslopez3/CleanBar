@@ -99,7 +99,7 @@ struct LayoutView: View {
 
         Section("Tips") {
             Tip(symbol: "square.stack.3d.up", text: "Apps hide as a whole, so an app's icons move together. macOS's own icons hide one by one, except the clock.")
-            Tip(symbol: "hand.draw", text: "Drop an icon on another one to put it in front of it in the menu bar, or ⌘-drag icons there yourself.")
+            Tip(symbol: "hand.draw", text: "Drop an icon between two others, or at either end of a row, to put it there in the menu bar, or ⌘-drag icons there yourself.")
             Tip(symbol: "sparkles", text: "Drag “New icons appear here” to where icons of apps CleanBar hasn't seen before should go.")
             Tip(symbol: "eye.slash", text: toggleTip)
         }
@@ -148,7 +148,8 @@ private struct SectionHeader: View {
     }
 }
 
-/// One row of the menu bar: the icons shown or hidden, in menu bar order.
+/// One row of the menu bar: the icons shown or hidden, in menu bar order. They wrap to more lines rather than scroll, so
+/// both ends of the row can always be reached during a drag.
 private struct ItemShelf: View {
     let section: LayoutSection
     let items: [MenuBarItem]
@@ -156,46 +157,59 @@ private struct ItemShelf: View {
     let unavailable: [MenuBarItem]
     let model: LayoutModel
     @State private var isTargeted = false
+    @State private var tileFrames: [String: CGRect] = [:]
+    /// Where a dragged icon would go.
+    @State private var gap: ShelfGap?
+
+    private nonisolated static let coordinateSpace = "ItemShelf"
 
     var body: some View {
         let hasMarker = model.newIconsSection == section
         let markerAnchorID = hasMarker ? model.newIconsAnchor(in: items + unavailable)?.id : nil
-        ScrollView(.horizontal) {
-            HStack(spacing: 0) {
-                ForEach(items) { item in
-                    if item.id == markerAnchorID {
-                        NewIconsMarker(isPlaced: model.isNewIconsMarkerPlaced)
-                    }
-                    ItemTile(item: item, section: section, model: model)
-                }
-                ForEach(unavailable) { item in
-                    if item.id == markerAnchorID {
-                        NewIconsMarker(isPlaced: model.isNewIconsMarkerPlaced)
-                    }
-                    // Its picture from when it was last in the menu bar, if CleanBar has one.
-                    MenuBarItemImage(item: item, picture: model.picture(for: item), isTrimmed: true)
-                        .tileFrame()
-                        .opacity(0.4)
-                        .help("\(item.displayName) (not visible right now)")
-                }
-                if hasMarker, markerAnchorID == nil {
+        WrappingRow {
+            ForEach(items) { item in
+                if item.id == markerAnchorID {
                     NewIconsMarker(isPlaced: model.isNewIconsMarkerPlaced)
                 }
-                if items.isEmpty, unavailable.isEmpty {
-                    Text(section == .hidden ? "Drop icons here to hide them" : "Drop icons here")
-                        .foregroundStyle(.tertiary)
-                        .padding(.horizontal, 8)
-                        .allowsHitTesting(false)
-                }
+                ItemTile(item: item, model: model)
+                    .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.coordinateSpace)) } action: { frame in
+                        tileFrames[item.id] = frame
+                    }
             }
-            .padding(.horizontal, 4)
-            .frame(minHeight: 40)
-            // Icons slide into their new places when the menu bar has been read again.
-            .animation(.snappy, value: model.snapshot?.date)
-            .modifier(ReadingShimmer(isActive: model.isRefreshing))
+            ForEach(unavailable) { item in
+                if item.id == markerAnchorID {
+                    NewIconsMarker(isPlaced: model.isNewIconsMarkerPlaced)
+                }
+                // Its picture from when it was last in the menu bar, if CleanBar has one.
+                MenuBarItemImage(item: item, picture: model.picture(for: item), isTrimmed: true)
+                    .tileFrame()
+                    .opacity(0.4)
+                    .help("\(item.displayName) (not visible right now)")
+            }
+            if hasMarker, markerAnchorID == nil {
+                NewIconsMarker(isPlaced: model.isNewIconsMarkerPlaced)
+            }
+            if items.isEmpty, unavailable.isEmpty {
+                Text(section == .hidden ? "Drop icons here to hide them" : "Drop icons here")
+                    .foregroundStyle(.tertiary)
+                    .padding(.horizontal, 8)
+                    .allowsHitTesting(false)
+            }
         }
-        .scrollIndicators(.never)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 4)
+        .frame(maxWidth: .infinity, minHeight: 40, alignment: .leading)
+        // Icons slide into their new places when the menu bar has been read again.
+        .animation(.snappy, value: model.snapshot?.date)
+        .modifier(ReadingShimmer(isActive: model.isRefreshing))
+        .overlay(alignment: .topLeading) {
+            if let gap {
+                Capsule()
+                    .fill(Color.accentColor)
+                    .frame(width: 3, height: gap.height)
+                    .offset(x: gap.x - 1.5, y: gap.y)
+                    .allowsHitTesting(false)
+            }
+        }
         .background {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(Color.accentColor.opacity(isTargeted ? 0.12 : 0))
@@ -203,20 +217,157 @@ private struct ItemShelf: View {
         .overlay {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .strokeBorder(Color.accentColor.opacity(isTargeted ? 1 : 0), lineWidth: 2)
+                .allowsHitTesting(false)
         }
-        .dropDestination(for: String.self) { ids, _ in
-            guard let id = ids.first else { return false }
-            model.requestMove(id, to: section, before: nil)
-            return true
-        } isTargeted: { isTargeted = $0 }
+        .contentShape(Rectangle())
+        .coordinateSpace(.named(Self.coordinateSpace))
+        .onDrop(of: [.plainText], delegate: ShelfDropDelegate(
+            section: section,
+            items: items,
+            frames: items.compactMap { tileFrames[$0.id] },
+            model: model,
+            gap: $gap,
+            isTargeted: $isTargeted
+        ))
+    }
+}
+
+/// Where in a row a dragged icon would go: before the row's item at `index`, or after them all.
+struct ShelfGap: Equatable {
+    var index: Int
+    /// The line to show there, in the row's coordinates.
+    var x: CGFloat
+    var y: CGFloat
+    var height: CGFloat
+
+    /// The gap nearest `point`, given the frames of the row's items in order, which may wrap to more lines: on the line
+    /// nearest `point`, before the first item whose middle is past it. Gaps from `limit` on aren't available, and give the
+    /// gap at `limit` instead. Nil in a row with no items.
+    init?(at point: CGPoint, in frames: [CGRect], limit: Int) {
+        guard let nearest = frames.min(by: { Self.verticalDistance($0, point.y) < Self.verticalDistance($1, point.y) }) else {
+            return nil
+        }
+        let line = frames.indices.filter { abs(frames[$0].minY - nearest.minY) < 1 }
+        let end = (line.last ?? frames.count - 1) + 1
+        let wanted = line.first { frames[$0].midX > point.x } ?? end
+        index = max(0, min(wanted, limit))
+        let isAtLineEnd = wanted == end && index == wanted
+        let frame = frames[isAtLineEnd || index == frames.count ? max(index - 1, 0) : index]
+        x = isAtLineEnd || index == frames.count ? frame.maxX : frame.minX
+        y = frame.minY + 4
+        height = max(frame.height - 8, 0)
+    }
+
+    private static func verticalDistance(_ frame: CGRect, _ y: CGFloat) -> CGFloat {
+        y < frame.minY ? frame.minY - y : y > frame.maxY ? y - frame.maxY : 0
+    }
+}
+
+/// A row takes every drop in it, and works out which gap it's nearest, so there's nowhere in it to miss, at either end
+/// included.
+private struct ShelfDropDelegate: DropDelegate {
+    let section: LayoutSection
+    let items: [MenuBarItem]
+    let frames: [CGRect]
+    let model: LayoutModel
+    @Binding var gap: ShelfGap?
+    @Binding var isTargeted: Bool
+
+    private func gap(for info: DropInfo) -> ShelfGap? {
+        ShelfGap(at: info.location, in: frames, limit: items.endOfMovableItems)
+    }
+
+    func dropEntered(info: DropInfo) {
+        isTargeted = true
+        gap = gap(for: info)
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        let new = gap(for: info)
+        if new != gap {
+            gap = new
+        }
+        return nil
+    }
+
+    func dropExited(info: DropInfo) {
+        isTargeted = false
+        gap = nil
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        let place = gap(for: info).map { RowPlace(gap: $0.index, in: items) } ?? .anywhere
+        isTargeted = false
+        gap = nil
+        guard let provider = info.itemProviders(for: [.plainText]).first else { return false }
+        let model = model
+        let section = section
+        _ = provider.loadTransferable(type: String.self) { result in
+            guard let id = try? result.get() else { return }
+            Task { @MainActor in
+                model.requestMove(id, to: section, at: place)
+            }
+        }
+        return true
+    }
+}
+
+/// Lays its views out in lines, as many as it takes.
+private struct WrappingRow: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let lines = lines(of: subviews, width: proposal.width ?? .infinity)
+        return CGSize(
+            width: lines.map(\.width).max() ?? 0,
+            height: lines.map(\.height).reduce(0, +)
+        )
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var y = bounds.minY
+        for line in lines(of: subviews, width: bounds.width) {
+            var x = bounds.minX
+            for index in line.indices {
+                let size = subviews[index].sizeThatFits(.unspecified)
+                let width = min(size.width, bounds.width)
+                subviews[index].place(
+                    at: CGPoint(x: x, y: y + (line.height - size.height) / 2),
+                    proposal: ProposedViewSize(width: width, height: size.height)
+                )
+                x += width
+            }
+            y += line.height
+        }
+    }
+
+    private struct Line {
+        var indices: [Int] = []
+        var width: CGFloat = 0
+        var height: CGFloat = 0
+    }
+
+    private func lines(of subviews: Subviews, width: CGFloat) -> [Line] {
+        var lines: [Line] = []
+        var line = Line()
+        for index in subviews.indices {
+            let size = subviews[index].sizeThatFits(.unspecified)
+            if !line.indices.isEmpty, line.width + size.width > width {
+                lines.append(line)
+                line = Line()
+            }
+            line.indices.append(index)
+            line.width += min(size.width, width)
+            line.height = max(line.height, size.height)
+        }
+        if !line.indices.isEmpty {
+            lines.append(line)
+        }
+        return lines
     }
 }
 
 private struct ItemTile: View {
     let item: MenuBarItem
-    let section: LayoutSection
     let model: LayoutModel
-    @State private var isTargeted = false
     @State private var isHovered = false
 
     var body: some View {
@@ -229,20 +380,6 @@ private struct ItemTile: View {
             .help(item.displayName)
             .accessibilityLabel(item.displayName)
             .draggable(item.id) { tile }
-            .overlay(alignment: .leading) {
-                if isTargeted {
-                    Capsule()
-                        .fill(Color.accentColor)
-                        .frame(width: 3)
-                        .padding(.vertical, 4)
-                        .offset(x: -1.5)
-                }
-            }
-            .dropDestination(for: String.self) { ids, _ in
-                guard let id = ids.first, id != item.id else { return false }
-                model.requestMove(id, to: section, before: item.id)
-                return true
-            } isTargeted: { isTargeted = $0 }
     }
 
     private var tile: some View {
@@ -260,33 +397,10 @@ private struct ItemTile: View {
     }
 }
 
-/// The room every icon in a row gets, in the editor and the floating bar: the same for each whatever room its app
-/// leaves around it in the menu bar, so icons are evenly spaced.
-enum IconTile {
-    /// On each side of an icon, so there's twice this between two icons.
-    static let padding: CGFloat = 8
-    /// In the editor. The floating bar is as tall as the menu bar.
-    static let height: CGFloat = 26
-}
-
 private extension View {
     func tileFrame() -> some View {
         padding(.horizontal, IconTile.padding)
             .frame(height: IconTile.height)
-    }
-}
-
-/// The shade the menu bar puts behind an item under the pointer, filling the item's tile, and darker while it's
-/// pressed.
-struct HoverHighlight: View {
-    let isOn: Bool
-    var isPressed = false
-
-    var body: some View {
-        Capsule()
-            .fill(isPressed ? .secondary : .tertiary)
-            .opacity(isOn || isPressed ? 1 : 0)
-            .animation(.easeOut(duration: 0.12), value: isOn)
     }
 }
 
@@ -336,7 +450,7 @@ private struct NewIconsMarker: View {
             .onHover { isHovered = $0 }
             .help(isPlaced
                 ? "Icons of apps CleanBar hasn't seen before go here. CleanBar ⌘-drags them into place, so the pointer jumps there for a moment. Icons already in the menu bar stay where they are."
-                : "Icons of apps CleanBar hasn't seen before go to this row, where macOS puts them. Drop this on an icon to have them go in front of it, or on a row's empty space to have them go at its end.")
+                : "Icons of apps CleanBar hasn't seen before go to this row, where macOS puts them. Drop this between two icons, or at either end of a row, to have them go there.")
             .draggable(LayoutModel.newIconsMarkerID) { label }
     }
 
@@ -434,83 +548,6 @@ private struct Tip: View {
         } icon: {
             Image(systemName: symbol)
                 .foregroundStyle(.tint)
-        }
-    }
-}
-
-/// A menu bar item the way the menu bar shows it: its picture, drawn in the window's text color, or else a symbol or
-/// its app's icon.
-struct MenuBarItemImage: View {
-    let item: MenuBarItem
-    let picture: ItemPicture?
-    /// The height to draw it at. Pictures keep their size in the menu bar.
-    var height: CGFloat?
-    /// Leaves out the room the item has around its icon in the menu bar, which differs from app to app, so icons can be
-    /// spaced evenly.
-    var isTrimmed = false
-
-    var body: some View {
-        if let picture {
-            let scale = height.map { $0 / picture.size.height } ?? 1
-            let drawn = isTrimmed ? picture.drawnSpan : 0...picture.size.width
-            ZStack {
-                if let glyph = picture.glyph {
-                    Image(nsImage: glyph)
-                        .renderingMode(.template)
-                        .resizable()
-                        .interpolation(.high)
-                }
-                if let color = picture.color {
-                    Image(nsImage: color)
-                        .resizable()
-                        .interpolation(.high)
-                }
-            }
-            .frame(width: picture.size.width * scale, height: picture.size.height * scale)
-            .offset(x: -drawn.lowerBound * scale)
-            .frame(width: (drawn.upperBound - drawn.lowerBound) * scale, alignment: .leading)
-            .clipped()
-        } else {
-            placeholder
-        }
-    }
-
-    /// Without a picture: a symbol for macOS's own items, and the app's icon for others.
-    @ViewBuilder
-    private var placeholder: some View {
-        let side = height ?? max(item.frame.height, 22)
-        if let symbol = item.systemItem?.symbolName {
-            Image(systemName: symbol)
-                .font(.system(size: side * 0.46))
-                .frame(width: isTrimmed ? nil : side * 1.2, height: side)
-        } else {
-            Image(nsImage: Self.appIcon(for: item))
-                .resizable()
-                .frame(width: side * 0.7, height: side * 0.7)
-                .frame(width: isTrimmed ? side * 0.7 : side, height: side)
-        }
-    }
-
-    private static func appIcon(for item: MenuBarItem) -> NSImage {
-        NSRunningApplication(processIdentifier: item.pid)?.icon
-            ?? NSImage(systemSymbolName: "app.dashed", accessibilityDescription: nil)
-            ?? NSImage()
-    }
-}
-
-private extension SystemMenuItem {
-    /// A symbol that looks like the item's icon, for when there's no picture of it.
-    var symbolName: String? {
-        switch self {
-        case .battery: "battery.75percent"
-        case .bluetooth: nil
-        case .clock: "clock"
-        case .display: "sun.max"
-        case .keyboardBrightness: "light.max"
-        case .sound: "speaker.wave.2.fill"
-        case .wifi: "wifi"
-        case .screenMirroring: "rectangle.on.rectangle"
-        case .controlCenter: "switch.2"
         }
     }
 }

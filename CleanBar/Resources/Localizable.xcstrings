@@ -1,0 +1,2609 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ (not visible right now)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (no visible ahora)"
+          }
+        }
+      }
+    },
+    "%@ is allowed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permiso de %@ concedido"
+          }
+        }
+      }
+    },
+    "%@ is running. Quit it before using CleanBar, or the two apps will keep moving each other's items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ se está ejecutando. Sal de esa app antes de usar CleanBar o las dos seguirán moviendo los elementos de la otra."
+          }
+        }
+      }
+    },
+    "%@ is running. Quit it, or it and CleanBar will keep moving each other's items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ se está ejecutando. Sal de esa app o CleanBar y ella seguirán moviendo los elementos de la otra."
+          }
+        }
+      }
+    },
+    "%@ will also hide whenever CleanBar hides icons: macOS only tells apart apps in the Applications folder or in /Library." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos de %@ también se ocultarán siempre que CleanBar oculte iconos: macOS solo distingue las apps de la carpeta Aplicaciones o de /Library."
+          }
+        }
+      }
+    },
+    "%lld of %lld shown" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld de %2$lld visibles"
+          }
+        }
+      }
+    },
+    "%lld rpm" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld rpm"
+          }
+        }
+      }
+    },
+    "1 hour" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 hora"
+          }
+        }
+      }
+    },
+    "24 hours" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "24 horas"
+          }
+        }
+      }
+    },
+    "30 days" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 días"
+          }
+        }
+      }
+    },
+    "7 days" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 días"
+          }
+        }
+      }
+    },
+    "A simple menu bar organizer." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un organizador para la barra de menús simple."
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acerca de"
+          }
+        }
+      }
+    },
+    "Accessibility" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accesibilidad"
+          }
+        }
+      }
+    },
+    "Add Profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir perfil"
+          }
+        }
+      }
+    },
+    "Add Rule" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir regla"
+          }
+        }
+      }
+    },
+    "Airflow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flujo de aire"
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir"
+          }
+        }
+      }
+    },
+    "Allow CleanBar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir CleanBar"
+          }
+        }
+      }
+    },
+    "Allowed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitido"
+          }
+        }
+      }
+    },
+    "Also When" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Y también cuando"
+          }
+        }
+      }
+    },
+    "Always in the menu bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siempre en la barra de menús"
+          }
+        }
+      }
+    },
+    "Another App" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otra app"
+          }
+        }
+      }
+    },
+    "Another app is setting the speed of the fans. Turn that off in that app for CleanBar to take over." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otra app está ajustando la velocidad de los ventiladores. Desactívalo en esa app para que CleanBar se encargue."
+          }
+        }
+      }
+    },
+    "Any Sensor" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquier sensor"
+          }
+        }
+      }
+    },
+    "Any State" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquier estado"
+          }
+        }
+      }
+    },
+    "Appearance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspecto"
+          }
+        }
+      }
+    },
+    "Apps hide as a whole, so an app's icons move together. macOS's own icons hide one by one, except the clock." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las apps se ocultan enteras, así que los iconos de una app se mueven juntos. Los iconos propios de macOS se ocultan uno a uno, salvo el reloj."
+          }
+        }
+      }
+    },
+    "Arrow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flecha"
+          }
+        }
+      }
+    },
+    "Automatic" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automático"
+          }
+        }
+      }
+    },
+    "Automatic Rules" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reglas automáticas"
+          }
+        }
+      }
+    },
+    "Automatic follows the rules below. To change what the fans do just for now, click the temperature in the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automático sigue las reglas de abajo. Para cambiar lo que hacen los ventiladores solo por ahora, haz clic en la temperatura de la barra de menús."
+          }
+        }
+      }
+    },
+    "Battery" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batería"
+          }
+        }
+      }
+    },
+    "Battery Charging" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando batería"
+          }
+        }
+      }
+    },
+    "Blue" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Azul"
+          }
+        }
+      }
+    },
+    "Bottom" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Base"
+          }
+        }
+      }
+    },
+    "CPU Core Average" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media de los núcleos de CPU"
+          }
+        }
+      }
+    },
+    "CPU Efficiency Core %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Núcleo de eficiencia %lld"
+          }
+        }
+      }
+    },
+    "CPU Performance Core %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Núcleo de rendimiento %lld"
+          }
+        }
+      }
+    },
+    "CPU Super Core %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supernúcleo %lld"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "Check for Updates…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar actualizaciones…"
+          }
+        }
+      }
+    },
+    "Choose whether CleanBar opens at login, its language and appearance, its icon, how hidden icons show and when they go away again, and the shortcut that shows them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige si CleanBar se abre al iniciar sesión, su idioma y aspecto, su icono, cómo se muestran los iconos ocultos y cuándo vuelven a ocultarse, y el atajo que los muestra."
+          }
+        }
+      }
+    },
+    "Circle" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Círculo"
+          }
+        }
+      }
+    },
+    "CleanBar" : {
+      "shouldTranslate" : false
+    },
+    "CleanBar %@ is available" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar %@ está disponible"
+          }
+        }
+      }
+    },
+    "CleanBar can read and move your menu bar icons now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar ya puede leer y mover los iconos de tu barra de menús."
+          }
+        }
+      }
+    },
+    "CleanBar can take pictures of your menu bar icons now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar ya puede tomar imágenes de los iconos de tu barra de menús."
+          }
+        }
+      }
+    },
+    "CleanBar can't hide “%@”: macOS doesn't say which app it belongs to." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar no puede ocultar «%@»: macOS no indica a qué app pertenece."
+          }
+        }
+      }
+    },
+    "CleanBar can't read this Mac's sensors." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar no puede leer los sensores de este Mac."
+          }
+        }
+      }
+    },
+    "CleanBar couldn't install the update" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar no ha podido instalar la actualización"
+          }
+        }
+      }
+    },
+    "CleanBar is moving a new icon into place. Try again in a moment." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar está colocando un icono nuevo. Vuelve a intentarlo en un momento."
+          }
+        }
+      }
+    },
+    "CleanBar is running from %@, so it isn't hiding anything: macOS only recognizes CleanBar's own icon in the Applications folder, and would hide it too. Move CleanBar there." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar se está ejecutando desde %@, así que no oculta nada: macOS solo reconoce el icono de CleanBar si está en la carpeta Aplicaciones, y también lo ocultaría. Mueve CleanBar allí."
+          }
+        }
+      }
+    },
+    "CleanBar is up to date." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar está actualizado."
+          }
+        }
+      }
+    },
+    "CleanBar needs the Accessibility permission to read and move menu bar items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar necesita el permiso de Accesibilidad para leer y mover los elementos de la barra de menús."
+          }
+        }
+      }
+    },
+    "CleanBar needs two permissions to work. Press the Allow button next to each permission to open System Settings, then drag CleanBar's icon into the list to grant it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar necesita dos permisos para funcionar. Pulsa el botón Permitir junto a cada permiso para abrir Ajustes del Sistema y arrastra el icono de CleanBar a la lista para concederlo."
+          }
+        }
+      }
+    },
+    "CleanBar needs your password to install its fan helper, which lets it change the speed of your Mac's fans." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar necesita tu contraseña para instalar su asistente de ventiladores, que le permite cambiar la velocidad de los ventiladores de tu Mac."
+          }
+        }
+      }
+    },
+    "CleanBar needs your password to remove its fan helper." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar necesita tu contraseña para eliminar su asistente de ventiladores."
+          }
+        }
+      }
+    },
+    "CleanBar switches to this language when it restarts." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar cambiará a este idioma cuando se reinicie."
+          }
+        }
+      }
+    },
+    "CleanBar waits while the pointer is in the menu bar or a menu is open." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar espera mientras el puntero está en la barra de menús o hay un menú abierto."
+          }
+        }
+      }
+    },
+    "CleanBar waits while the pointer is over the floating bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CleanBar espera mientras el puntero está sobre la barra flotante."
+          }
+        }
+      }
+    },
+    "CleanBar's fan helper didn't start. Check that it's allowed in System Settings → General → Login Items & Extensions." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El asistente de ventiladores de CleanBar no se ha iniciado. Comprueba que esté permitido en Ajustes del Sistema → General → Ítems de inicio y extensiones."
+          }
+        }
+      }
+    },
+    "CleanBar's icon always stays in the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El icono de CleanBar siempre se queda en la barra de menús."
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacer clic en un espacio vacío de la barra de menús"
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar or press your shortcut to see the menu bar without the hidden icons. They come back when you move an icon or click Refresh, and hide again when this window closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un espacio vacío de la barra de menús o pulsa tu atajo para ver la barra de menús sin los iconos ocultos. Vuelven cuando mueves un icono o haces clic en Actualizar, y se ocultan de nuevo al cerrar esta ventana."
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar to see them in a bar below it, and again to close it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un espacio vacío de la barra de menús para verlos en una barra debajo, y otra vez para cerrarla."
+          }
+        }
+      }
+    },
+    "Click an empty space in the menu bar to show them where they were, and again to hide them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un espacio vacío de la barra de menús para mostrarlos donde estaban, y otra vez para ocultarlos."
+          }
+        }
+      }
+    },
+    "Click an icon in the bar to open its menu: the icon comes back at the left end of the menu bar icons until the menu closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en un icono de la barra para abrir su menú: el icono vuelve al extremo izquierdo de los iconos de la barra de menús hasta que el menú se cierra."
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacer clic en el icono de CleanBar"
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon or press your shortcut to see the menu bar without the hidden icons. They come back when you move an icon or click Refresh, and hide again when this window closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en el icono de CleanBar o pulsa tu atajo para ver la barra de menús sin los iconos ocultos. Vuelven cuando mueves un icono o haces clic en Actualizar, y se ocultan de nuevo al cerrar esta ventana."
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon or press your shortcut to see them in a bar below it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en el icono de CleanBar o pulsa tu atajo para verlos en una barra debajo de él."
+          }
+        }
+      }
+    },
+    "Click the CleanBar icon or press your shortcut to show them where they were." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic en el icono de CleanBar o pulsa tu atajo para mostrarlos donde estaban."
+          }
+        }
+      }
+    },
+    "Click, then press the keys of your shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz clic y pulsa las teclas de tu atajo"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        }
+      }
+    },
+    "Close Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar Ajustes"
+          }
+        }
+      }
+    },
+    "Close Settings so CleanBar can work as expected" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cierra Ajustes para que CleanBar funcione como debe"
+          }
+        }
+      }
+    },
+    "Color" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
+    },
+    "Couldn't reach GitHub. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido conectar con GitHub. Inténtalo más tarde."
+          }
+        }
+      }
+    },
+    "Custom" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizado"
+          }
+        }
+      }
+    },
+    "Dark" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscuro"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        }
+      }
+    },
+    "Delete Profile and Its Rules" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar perfil y sus reglas"
+          }
+        }
+      }
+    },
+    "Delete “%@”?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar “%@”?"
+          }
+        }
+      }
+    },
+    "Developed by Juan Carlos López." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desarrollado por Juan Carlos López."
+          }
+        }
+      }
+    },
+    "Dimmed icons are behind Apple's « because the menu bar is full. Click Refresh to bring them out." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos atenuados están detrás del « de Apple porque la barra de menús está llena. Haz clic en Actualizar para sacarlos."
+          }
+        }
+      }
+    },
+    "Dot" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Punto"
+          }
+        }
+      }
+    },
+    "Double-click a profile you added to rename it. macOS still protects your Mac if it gets too hot." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz doble clic en un perfil que hayas añadido para renombrarlo. macOS sigue protegiendo tu Mac si se calienta demasiado."
+          }
+        }
+      }
+    },
+    "Download and Restart" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargar y reiniciar"
+          }
+        }
+      }
+    },
+    "Downloading CleanBar %@…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargando CleanBar %@…"
+          }
+        }
+      }
+    },
+    "Drag CleanBar into the list above" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra CleanBar a la lista de arriba"
+          }
+        }
+      }
+    },
+    "Drag icons between Shown and Hidden to choose which ones CleanBar hides. While this window is open, hidden icons are showing." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra iconos entre Visibles y Ocultos para elegir cuáles oculta CleanBar. Mientras esta ventana está abierta, los iconos ocultos se muestran."
+          }
+        }
+      }
+    },
+    "Drag into the list in System Settings to allow CleanBar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrástralo a la lista de Ajustes del Sistema para permitir CleanBar."
+          }
+        }
+      }
+    },
+    "Drag sensors to put them in the order you like, and turn off those you don't want to see." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra los sensores para ponerlos en el orden que quieras y desactiva los que no quieras ver."
+          }
+        }
+      }
+    },
+    "Drag “New icons appear here” to where icons of apps CleanBar hasn't seen before should go." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra «Aquí aparecen los iconos nuevos» adonde deban ir los iconos de las apps que CleanBar no ha visto antes."
+          }
+        }
+      }
+    },
+    "Drop an icon between two others, or at either end of a row, to put it there in the menu bar, or ⌘-drag icons there yourself." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suelta un icono entre otros dos, o en cualquier extremo de una fila, para ponerlo ahí en la barra de menús, o arrastra los iconos tú mismo con ⌘."
+          }
+        }
+      }
+    },
+    "Drop icons here" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suelta iconos aquí"
+          }
+        }
+      }
+    },
+    "Drop icons here to hide them" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suelta iconos aquí para ocultarlos"
+          }
+        }
+      }
+    },
+    "Dropping it there allows Accessibility. If CleanBar is already in the list, turn it on instead." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al soltarlo ahí, se permite Accesibilidad. Si CleanBar ya está en la lista, actívalo en su lugar."
+          }
+        }
+      }
+    },
+    "Dropping it there allows Screen Recording, and macOS then asks to reopen CleanBar. If CleanBar is already in the list, turn it on instead." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al soltarlo ahí, se permite Grabación de pantalla y después macOS pide volver a abrir CleanBar. Si CleanBar ya está en la lista, actívalo en su lugar."
+          }
+        }
+      }
+    },
+    "Edit Menu Bar Layout" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar la barra de menús"
+          }
+        }
+      }
+    },
+    "FANS" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VENTILADORES"
+          }
+        }
+      }
+    },
+    "Fan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ventilador"
+          }
+        }
+      }
+    },
+    "Fan %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ventilador %lld"
+          }
+        }
+      }
+    },
+    "Fan Helper" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asistente de ventiladores"
+          }
+        }
+      }
+    },
+    "Fan Profiles" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfiles de ventilador"
+          }
+        }
+      }
+    },
+    "Fan Settings…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes de ventiladores…"
+          }
+        }
+      }
+    },
+    "Fans" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ventiladores"
+          }
+        }
+      }
+    },
+    "Follow Rules" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir las reglas"
+          }
+        }
+      }
+    },
+    "From 1 to 60 seconds" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De 1 a 60 segundos"
+          }
+        }
+      }
+    },
+    "GPU %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPU %lld"
+          }
+        }
+      }
+    },
+    "General" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        }
+      }
+    },
+    "Green" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verde"
+          }
+        }
+      }
+    },
+    "Hidden" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultos"
+          }
+        }
+      }
+    },
+    "Hidden Icons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iconos ocultos"
+          }
+        }
+      }
+    },
+    "Hidden icons leave the menu bar completely." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos ocultos desaparecen por completo de la barra de menús."
+          }
+        }
+      }
+    },
+    "Hide after" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar tras"
+          }
+        }
+      }
+    },
+    "Hide icons again automatically" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a ocultar los iconos automáticamente"
+          }
+        }
+      }
+    },
+    "Hide the CleanBar icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar el icono de CleanBar"
+          }
+        }
+      }
+    },
+    "Hover over an empty space in the menu bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasar el puntero sobre un espacio vacío de la barra de menús"
+          }
+        }
+      }
+    },
+    "Icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icono"
+          }
+        }
+      }
+    },
+    "Icon Only" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo icono"
+          }
+        }
+      }
+    },
+    "Icons of apps CleanBar hasn't seen before go here. CleanBar ⌘-drags them into place, so the pointer jumps there for a moment. Icons already in the menu bar stay where they are." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos de las apps que CleanBar no ha visto antes van aquí. CleanBar los coloca arrastrándolos con ⌘, así que el puntero salta allí un momento. Los iconos que ya están en la barra de menús se quedan donde están."
+          }
+        }
+      }
+    },
+    "Icons of apps CleanBar hasn't seen before go to this row, where macOS puts them. Drop this between two icons, or at either end of a row, to have them go there." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los iconos de las apps que CleanBar no ha visto antes van a esta fila, donde macOS los pone. Suelta esto entre dos iconos, o en cualquier extremo de una fila, para que vayan ahí."
+          }
+        }
+      }
+    },
+    "If a permission is on in System Settings but still missing here, reset it. CleanBar removes it from System Settings and restarts, then you allow it again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si un permiso está activado en Ajustes del Sistema pero aquí sigue faltando, restablécelo. CleanBar lo elimina de Ajustes del Sistema y se reinicia, y luego vuelves a permitirlo."
+          }
+        }
+      }
+    },
+    "If you can't see the temperature, it's behind Apple's «: move it under Menu Bar Layout, or hold ⌘ and drag it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si no ves la temperatura, está detrás del « de Apple: muévela en el editor de la barra de menús, o arrástrala con ⌘ pulsada."
+          }
+        }
+      }
+    },
+    "In a Floating Bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En una barra flotante"
+          }
+        }
+      }
+    },
+    "In the Menu Bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la barra de menús"
+          }
+        }
+      }
+    },
+    "Install Helper…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instalar asistente…"
+          }
+        }
+      }
+    },
+    "Installing CleanBar %@…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instalando CleanBar %@…"
+          }
+        }
+      }
+    },
+    "Keyboard Shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atajo de teclado"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma"
+          }
+        }
+      }
+    },
+    "Later" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más tarde"
+          }
+        }
+      }
+    },
+    "Left Fan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ventilador izquierdo"
+          }
+        }
+      }
+    },
+    "Lets CleanBar see your menu bar icons, move them for you and open Notification Center when you click the clock while icons are hidden." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite a CleanBar ver los iconos de tu barra de menús, moverlos por ti y abrir el Centro de notificaciones al hacer clic en el reloj mientras hay iconos ocultos."
+          }
+        }
+      }
+    },
+    "Lets CleanBar take pictures of your menu bar icons for the layout editor. Nothing is recorded or saved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite a CleanBar tomar imágenes de los iconos de tu barra de menús para el editor de la barra de menús. No se graba ni se guarda nada."
+          }
+        }
+      }
+    },
+    "Lid Closed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapa cerrada"
+          }
+        }
+      }
+    },
+    "Light" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
+          }
+        }
+      }
+    },
+    "Look for a newer version of CleanBar on GitHub" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar una versión más reciente de CleanBar en GitHub"
+          }
+        }
+      }
+    },
+    "Low Power Mode" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bajo consumo"
+          }
+        }
+      }
+    },
+    "Memory %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memoria %lld"
+          }
+        }
+      }
+    },
+    "Menu Bar Icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icono de la barra de menús"
+          }
+        }
+      }
+    },
+    "Menu Bar Layout" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra de menús"
+          }
+        }
+      }
+    },
+    "Move CleanBar to the Applications folder, or download the update yourself." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mueve CleanBar a la carpeta Aplicaciones o descarga la actualización tú mismo."
+          }
+        }
+      }
+    },
+    "Move to Bottom" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover abajo del todo"
+          }
+        }
+      }
+    },
+    "Move to Top" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover arriba del todo"
+          }
+        }
+      }
+    },
+    "New icons appear here" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquí aparecen los iconos nuevos"
+          }
+        }
+      }
+    },
+    "No hidden icons right now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay iconos ocultos ahora mismo"
+          }
+        }
+      }
+    },
+    "No readings yet" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay lecturas"
+          }
+        }
+      }
+    },
+    "No rules yet, so macOS controls the fans on Automatic." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay reglas, así que en Automático macOS controla los ventiladores."
+          }
+        }
+      }
+    },
+    "Not Installed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No instalado"
+          }
+        }
+      }
+    },
+    "Not allowed in the menu bar, under System Settings → Menu Bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No permitidos en la barra de menús, en Ajustes del Sistema → Barra de menús"
+          }
+        }
+      }
+    },
+    "On Battery" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con batería"
+          }
+        }
+      }
+    },
+    "Only administrators can change the fans, so CleanBar uses a small helper for it. It's installed with your password the first time you change them, and runs only while you've set a speed. When CleanBar quits, macOS takes over the fans again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo los administradores pueden cambiar los ventiladores, así que CleanBar usa un pequeño asistente para ello. Se instala con tu contraseña la primera vez que los cambias y solo se ejecuta mientras tengas una velocidad ajustada. Al salir de CleanBar, macOS vuelve a encargarse de los ventiladores."
+          }
+        }
+      }
+    },
+    "Open CleanBar at login" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir CleanBar al iniciar sesión"
+          }
+        }
+      }
+    },
+    "Open CleanBar's page on GitHub" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir la página de CleanBar en GitHub"
+          }
+        }
+      }
+    },
+    "Open Download Page" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir página de descarga"
+          }
+        }
+      }
+    },
+    "Open Login Items" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ítems de inicio"
+          }
+        }
+      }
+    },
+    "Open Menu Bar Settings…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ajustes de la barra de menús…"
+          }
+        }
+      }
+    },
+    "Open Permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Permisos"
+          }
+        }
+      }
+    },
+    "Orange" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naranja"
+          }
+        }
+      }
+    },
+    "Out of the menu bar until you show them" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuera de la barra de menús hasta que los muestres"
+          }
+        }
+      }
+    },
+    "Overheating" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobrecalentado"
+          }
+        }
+      }
+    },
+    "Palm Rest" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reposamanos"
+          }
+        }
+      }
+    },
+    "Permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permisos"
+          }
+        }
+      }
+    },
+    "Pink" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosa"
+          }
+        }
+      }
+    },
+    "Plugged In" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enchufado"
+          }
+        }
+      }
+    },
+    "Press the keys of your shortcut, or Escape to cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa las teclas de tu atajo, o Esc para cancelar"
+          }
+        }
+      }
+    },
+    "Press your shortcut to see the menu bar without the hidden icons. They come back when you move an icon or click Refresh, and hide again when this window closes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa tu atajo para ver la barra de menús sin los iconos ocultos. Vuelven cuando mueves un icono o haces clic en Actualizar, y se ocultan de nuevo al cerrar esta ventana."
+          }
+        }
+      }
+    },
+    "Profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfil"
+          }
+        }
+      }
+    },
+    "Profile %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfil %lld"
+          }
+        }
+      }
+    },
+    "Purple" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Morado"
+          }
+        }
+      }
+    },
+    "Quit CleanBar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir de CleanBar"
+          }
+        }
+      }
+    },
+    "Read the menu bar again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a leer la barra de menús"
+          }
+        }
+      }
+    },
+    "Reading" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lectura"
+          }
+        }
+      }
+    },
+    "Reading your menu bar…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leyendo tu barra de menús…"
+          }
+        }
+      }
+    },
+    "Record Shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grabar atajo"
+          }
+        }
+      }
+    },
+    "Red" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rojo"
+          }
+        }
+      }
+    },
+    "Refresh" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizar"
+          }
+        }
+      }
+    },
+    "Remove Helper…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar asistente…"
+          }
+        }
+      }
+    },
+    "Remove Profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar perfil"
+          }
+        }
+      }
+    },
+    "Remove Rule" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar regla"
+          }
+        }
+      }
+    },
+    "Remove shortcut" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar atajo"
+          }
+        }
+      }
+    },
+    "Rename" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renombrar"
+          }
+        }
+      }
+    },
+    "Reset Permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer permisos"
+          }
+        }
+      }
+    },
+    "Rest the pointer on an empty space in the menu bar to see them in a bar below it. The bar closes once the pointer has left it and the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja el puntero sobre un espacio vacío de la barra de menús para verlos en una barra debajo. La barra se cierra cuando el puntero sale de ella y de la barra de menús."
+          }
+        }
+      }
+    },
+    "Rest the pointer on an empty space in the menu bar to show them where they were. They go again once the pointer has left the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja el puntero sobre un espacio vacío de la barra de menús para mostrarlos donde estaban. Vuelven a ocultarse cuando el puntero sale de la barra de menús."
+          }
+        }
+      }
+    },
+    "Restart Now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar ahora"
+          }
+        }
+      }
+    },
+    "Restore Defaults" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar valores por omisión"
+          }
+        }
+      }
+    },
+    "Right Fan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ventilador derecho"
+          }
+        }
+      }
+    },
+    "Right Now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora mismo"
+          }
+        }
+      }
+    },
+    "Rules use this profile, so they'd be deleted with it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay reglas que usan este perfil, así que se eliminarían con él."
+          }
+        }
+      }
+    },
+    "SENSORS" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SENSORES"
+          }
+        }
+      }
+    },
+    "SSD" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSD"
+          }
+        }
+      }
+    },
+    "Same as the Menu Bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Igual que la barra de menús"
+          }
+        }
+      }
+    },
+    "Screen Recording" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grabación de pantalla"
+          }
+        }
+      }
+    },
+    "See your Mac's temperature in the menu bar. Click it for every sensor and fan, rest the pointer on one for its history, and on Fans to set their speed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulta la temperatura de tu Mac en la barra de menús. Haz clic en ella para ver todos los sensores y ventiladores, deja el puntero sobre uno para ver su historial y sobre Ventiladores para ajustar su velocidad."
+          }
+        }
+      }
+    },
+    "Sensor Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes de sensores"
+          }
+        }
+      }
+    },
+    "Sensors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensores"
+          }
+        }
+      }
+    },
+    "Sensors List" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de sensores"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        }
+      }
+    },
+    "Settings Open" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes abiertos"
+          }
+        }
+      }
+    },
+    "Show hidden icons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar iconos ocultos"
+          }
+        }
+      }
+    },
+    "Show icons in the menu bar list" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar iconos en la lista de la barra de menús"
+          }
+        }
+      }
+    },
+    "Show or hide hidden icons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar u ocultar los iconos ocultos"
+          }
+        }
+      }
+    },
+    "Show the temperature in the menu bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar la temperatura en la barra de menús"
+          }
+        }
+      }
+    },
+    "Show them when you" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrarlos al"
+          }
+        }
+      }
+    },
+    "Shown" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibles"
+          }
+        }
+      }
+    },
+    "Shows" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra"
+          }
+        }
+      }
+    },
+    "Size" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamaño"
+          }
+        }
+      }
+    },
+    "Space" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espacio"
+          }
+        }
+      }
+    },
+    "Star" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estrella"
+          }
+        }
+      }
+    },
+    "Star on GitHub" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dar una estrella en GitHub"
+          }
+        }
+      }
+    },
+    "Startup" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicio"
+          }
+        }
+      }
+    },
+    "Stretch" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramo"
+          }
+        }
+      }
+    },
+    "System Controlled" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlado por el sistema"
+          }
+        }
+      }
+    },
+    "System Language (%@)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma del sistema (%@)"
+          }
+        }
+      }
+    },
+    "Temperature" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperatura"
+          }
+        }
+      }
+    },
+    "The CleanBar icon and your shortcut work too." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El icono de CleanBar y tu atajo también funcionan."
+          }
+        }
+      }
+    },
+    "The clock always stays in the menu bar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El reloj siempre se queda en la barra de menús."
+          }
+        }
+      }
+    },
+    "The disk image doesn't contain CleanBar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La imagen de disco no contiene CleanBar."
+          }
+        }
+      }
+    },
+    "The download failed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La descarga ha fallado."
+          }
+        }
+      }
+    },
+    "The downloaded app isn't a newer CleanBar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La app descargada no es una versión más reciente de CleanBar."
+          }
+        }
+      }
+    },
+    "The downloaded app's signature isn't valid." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La firma de la app descargada no es válida."
+          }
+        }
+      }
+    },
+    "The fans are set to “%@” for now, so the rules are waiting." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por ahora los ventiladores están en “%@”, así que las reglas están en espera."
+          }
+        }
+      }
+    },
+    "The first time, macOS asks for your password to install CleanBar's fan helper." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La primera vez, macOS te pide la contraseña para instalar el asistente de ventiladores de CleanBar."
+          }
+        }
+      }
+    },
+    "The release has no disk image to download." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La versión no incluye una imagen de disco para descargar."
+          }
+        }
+      }
+    },
+    "The rules can't change the fans until CleanBar's fan helper is installed, which takes your password." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las reglas no pueden cambiar los ventiladores hasta que se instale el asistente de ventiladores de CleanBar, para lo que hace falta tu contraseña."
+          }
+        }
+      }
+    },
+    "The update couldn't be unpacked." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido descomprimir la actualización."
+          }
+        }
+      }
+    },
+    "This profile always stays as it is. Add your own to choose each fan's speed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este perfil siempre se queda como está. Añade uno propio para elegir la velocidad de cada ventilador."
+          }
+        }
+      }
+    },
+    "This rule applies now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta regla se cumple ahora"
+          }
+        }
+      }
+    },
+    "This rule doesn't apply now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta regla no se cumple ahora"
+          }
+        }
+      }
+    },
+    "This version of macOS doesn't let CleanBar hide icons. CleanBar needs macOS 27." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta versión de macOS no permite que CleanBar oculte iconos. CleanBar necesita macOS 27."
+          }
+        }
+      }
+    },
+    "Three Dots" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tres puntos"
+          }
+        }
+      }
+    },
+    "Time" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora"
+          }
+        }
+      }
+    },
+    "Tips" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consejos"
+          }
+        }
+      }
+    },
+    "To come back to these settings, open CleanBar again from Spotlight or the Applications folder." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para volver a estos ajustes, abre CleanBar de nuevo desde Spotlight o la carpeta Aplicaciones."
+          }
+        }
+      }
+    },
+    "Turned Off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivados"
+          }
+        }
+      }
+    },
+    "Type a shortcut…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa un atajo…"
+          }
+        }
+      }
+    },
+    "Updating CleanBar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizando CleanBar"
+          }
+        }
+      }
+    },
+    "Version %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión %@"
+          }
+        }
+      }
+    },
+    "When" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuando"
+          }
+        }
+      }
+    },
+    "When CleanBar Opens" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al abrir CleanBar"
+          }
+        }
+      }
+    },
+    "When several rules apply, the fans use the fastest of their profiles. When none does, macOS controls them. A rule on a temperature stays on until it has been a few degrees lower for 30 seconds, so the fans don't keep changing speed. A rule can't ask for things that don't go together, or for exactly what another rule asks for, so those choices are dimmed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuando se cumplen varias reglas, los ventiladores usan el más rápido de sus perfiles. Cuando no se cumple ninguna, los controla macOS. Una regla de temperatura sigue activa hasta que la temperatura lleva 30 segundos unos grados por debajo, para que los ventiladores no estén cambiando de velocidad todo el rato. Una regla no puede pedir cosas incompatibles, ni exactamente lo mismo que otra regla, así que esas opciones aparecen atenuadas."
+          }
+        }
+      }
+    },
+    "While Menu Bar Layout is open, hidden icons only show and hide in the menu bar, where it can read and move them, and they stay until you hide them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mientras el editor de la barra de menús está abierto, los iconos ocultos solo se muestran y se ocultan en la barra de menús, donde puede leerlos y moverlos, y se quedan hasta que los ocultes."
+          }
+        }
+      }
+    },
+    "Wi-Fi" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi"
+          }
+        }
+      }
+    },
+    "With only an icon, CleanBar reads the sensors every 30 seconds instead of every 5, to save CPU. Rules and the sensors list still get them as often as they need." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con solo un icono, CleanBar lee los sensores cada 30 segundos en vez de cada 5 para ahorrar CPU. Las reglas y la lista de sensores los siguen recibiendo tan a menudo como necesitan."
+          }
+        }
+      }
+    },
+    "Yellow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amarillo"
+          }
+        }
+      }
+    },
+    "You have version %@. CleanBar will download the new version and restart to install it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tienes la versión %@. CleanBar descargará la nueva versión y se reiniciará para instalarla."
+          }
+        }
+      }
+    },
+    "Your shortcut works too." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu atajo también funciona."
+          }
+        }
+      }
+    },
+    "is >" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "es >"
+          }
+        }
+      }
+    },
+    "macOS didn't let CleanBar change the fans, so macOS keeps controlling them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS no ha dejado que CleanBar cambie los ventiladores, así que sigue controlándolos."
+          }
+        }
+      }
+    },
+    "macOS didn't let CleanBar install its fan helper." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS no ha dejado que CleanBar instale su asistente de ventiladores."
+          }
+        }
+      }
+    },
+    "macOS didn't let CleanBar move “%@”. Some system items, like the clock and Control Center, can't be moved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS no ha dejado que CleanBar mueva «%@». Algunos elementos del sistema, como el reloj y el Centro de control, no se pueden mover."
+          }
+        }
+      }
+    },
+    "macOS didn't let CleanBar remove its fan helper." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS no ha dejado que CleanBar elimine su asistente de ventiladores."
+          }
+        }
+      }
+    },
+    "macOS doesn't let CleanBar hide “%@”. Of macOS's own icons, CleanBar can hide Wi-Fi, Bluetooth, Battery, Sound, Display, Keyboard Brightness, Screen Mirroring and Control Center." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS no deja que CleanBar oculte «%@». De los iconos propios de macOS, CleanBar puede ocultar Wi‑Fi, Bluetooth, Batería, Sonido, Pantalla, Brillo del teclado, Duplicación de pantalla y Centro de control."
+          }
+        }
+      }
+    },
+    "macOS needs you to allow CleanBar in Login Items." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS necesita que permitas CleanBar en Ítems de inicio."
+          }
+        }
+      }
+    },
+    "macOS says the Mac is too hot and is slowing it down to cool off (thermal state Serious or Critical). It's not a set temperature, and it usually comes on after the Mac has been hot for a while." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS indica que el Mac está demasiado caliente y lo está ralentizando para enfriarlo (estado térmico Serio o Crítico). No es una temperatura fija y suele activarse cuando el Mac lleva un rato caliente."
+          }
+        }
+      }
+    },
+    "macOS system item" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento del sistema macOS"
+          }
+        }
+      }
+    },
+    "second" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "segundo"
+          }
+        }
+      }
+    },
+    "seconds" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "segundos"
+          }
+        }
+      }
+    },
+    "“%@” isn't in the menu bar right now, so it can't be moved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» no está en la barra de menús ahora mismo, así que no se puede mover."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

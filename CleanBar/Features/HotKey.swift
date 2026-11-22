@@ -11,13 +11,19 @@ final class HotKeyCenter {
     private var hotKeyRef: EventHotKeyRef?
     private var handlerRef: EventHandlerRef?
     private var action: (() -> Void)?
+    private var escapeRef: EventHotKeyRef?
+    private var escapeAction: (() -> Void)?
+
+    private static let signature = OSType(0x434C_4252) // "CLBR"
+    private static let shortcutID: UInt32 = 1
+    private static let escapeID: UInt32 = 2
 
     func register(_ combo: HotKeyCombo?, action: @escaping () -> Void) {
         unregister()
         self.action = action
         guard let combo else { return }
         installHandlerIfNeeded()
-        let id = EventHotKeyID(signature: OSType(0x434C_4252), id: 1) // "CLBR"
+        let id = EventHotKeyID(signature: Self.signature, id: Self.shortcutID)
         RegisterEventHotKey(combo.keyCode, combo.carbonModifiers, id, GetApplicationEventTarget(), 0, &hotKeyRef)
     }
 
@@ -28,9 +34,30 @@ final class HotKeyCenter {
         hotKeyRef = nil
     }
 
-    fileprivate func handlePress() {
-        guard !isPaused else { return }
-        action?()
+    /// Takes the Esc key for as long as something's open that never has the keyboard, so nothing else can notice it. Like an
+    /// open menu, it keeps Esc from the app in front.
+    func registerEscape(action: @escaping () -> Void) {
+        unregisterEscape()
+        escapeAction = action
+        installHandlerIfNeeded()
+        let id = EventHotKeyID(signature: Self.signature, id: Self.escapeID)
+        RegisterEventHotKey(UInt32(kVK_Escape), 0, id, GetApplicationEventTarget(), 0, &escapeRef)
+    }
+
+    func unregisterEscape() {
+        if let escapeRef {
+            UnregisterEventHotKey(escapeRef)
+        }
+        escapeRef = nil
+        escapeAction = nil
+    }
+
+    fileprivate func handlePress(id: UInt32) {
+        if id == Self.escapeID {
+            escapeAction?()
+        } else if !isPaused {
+            action?()
+        }
     }
 
     private func installHandlerIfNeeded() {
@@ -46,8 +73,11 @@ private nonisolated func hotKeyEventHandler(
     _ event: EventRef?,
     _ userData: UnsafeMutableRawPointer?
 ) -> OSStatus {
+    var id = EventHotKeyID()
+    GetEventParameter(event, EventParamName(kEventParamDirectObject), EventParamType(typeEventHotKeyID), nil, MemoryLayout<EventHotKeyID>.size, nil, &id)
+    let pressed = id.id
     MainActor.assumeIsolated {
-        HotKeyCenter.shared.handlePress()
+        HotKeyCenter.shared.handlePress(id: pressed)
     }
     return OSStatus(noErr)
 }

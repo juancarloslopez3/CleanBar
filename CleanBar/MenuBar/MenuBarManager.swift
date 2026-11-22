@@ -12,6 +12,7 @@ import AppKit
 final class MenuBarManager: NSObject {
     let settings: AppSettings
     let layout = LayoutModel()
+    let sensors: SensorsController
 
     private let icon = ControlItem(role: .icon)
     private let hider = IconHider()
@@ -42,11 +43,15 @@ final class MenuBarManager: NSObject {
     private var revealGeneration = 0
     /// Hidden icons let into the menu bar for a moment so CleanBar can picture them for the floating bar.
     private var iconsBeingPictured = HiddenIcons()
-    /// Apps that opened with hidden icons CleanBar has never seen, in the order they opened.
-    private var appsToPicture: [String] = []
+    /// Apps that opened with hidden icons CleanBar has never seen, and until when to wait for their icons.
+    private var appsToPicture: [String: Date] = [:]
     private var picturingTask: Task<Void, Never>?
     /// Set while the layout editor is open. It opens with every icon shown, so they can be seen and moved.
     private var isEditingLayout = false
+    /// Keeps the layout editor up to date with the menu bar while it's open.
+    private var editorWatchTask: Task<Void, Never>?
+    /// Clicks on « in a row that didn't open it, so CleanBar doesn't keep clicking something that doesn't work.
+    private var failedOverflowClicks = 0
     /// Set for the few hundredths of a second hiding pauses so Notification Center can open.
     private var isPausedForNotificationCenter = false
     private var notificationCenterTask: Task<Void, Never>?
@@ -88,6 +93,7 @@ final class MenuBarManager: NSObject {
 
     init(settings: AppSettings) {
         self.settings = settings
+        sensors = SensorsController(settings: settings)
         hiddenIconsStyle = settings.hiddenIconsStyle
         super.init()
     }
@@ -99,6 +105,9 @@ final class MenuBarManager: NSObject {
         floatingBar.ignoresClick = { [weak self] location in self?.togglesFloatingBar(at: location) ?? false }
         editingNote.ignoresClick = { [weak self] location in self?.togglesFloatingBar(at: location) ?? false }
         layout.manager = self
+        sensors.showSettings = { [weak self] tab in self?.showSettings(tab: tab) }
+        updateSensorItem()
+        sensors.start()
         applyIconSettings()
         installEventMonitors()
         startClockTap()
@@ -155,6 +164,7 @@ final class MenuBarManager: NSObject {
 
     private func update(force: Bool, animated: Bool = false, generation: Int = 0) async {
         defer {
+            updateSensorItem()
             updateIcon()
             updateClockTap()
         }
@@ -185,8 +195,16 @@ final class MenuBarManager: NSObject {
     /// CleanBar's icon is filled while hidden icons are showing: back in the menu bar, or in the floating bar. Not for
     /// the moment they show so Notification Center can open.
     private func updateIcon() {
-        let isShowingInMenuBar = !hider.isActive && !settings.hiddenIcons.isEmpty && !isPausedForNotificationCenter
+        let isShowingInMenuBar = settings.hiddenIcons.isEmpty
+            ? settings.hasHiddenIcons && isShowingHidden
+            : !hider.isActive && !isPausedForNotificationCenter
         icon.setShowsHiddenIcons(floatingBar.isOpen || isShowingInMenuBar)
+    }
+
+    /// macOS's list goes by app, and would take CleanBar's icon along with its temperature, so CleanBar takes the temperature
+    /// out of the menu bar itself. It comes back with the other hidden icons in the menu bar, and in the layout editor.
+    private func updateSensorItem() {
+        sensors.keepsItemOut = Self.canHide && settings.hiddenIcons.sensorItem && !isShowingHidden
     }
 
     /// macOS's list for hiding `hidden`: the apps and macOS's own icons to allow.
@@ -236,7 +254,9 @@ final class MenuBarManager: NSObject {
     /// macOS's own icons hide one by one. Other apps' icons hide per app, so this hides or shows all of the item's
     /// app's icons.
     func setHidden(_ hidden: Bool, item: MenuBarItem) {
-        if let systemItem = item.systemItem {
+        if item.controlRole == .sensors {
+            settings.hidesSensorItem = hidden
+        } else if let systemItem = item.systemItem {
             if hidden {
                 settings.hiddenSystemItems.insert(systemItem)
             } else {
@@ -256,7 +276,7 @@ final class MenuBarManager: NSObject {
     private func checkHiding() async {
         guard Permissions.accessibilityGranted else { return }
         let clock = Self.clockIdentifier
-        clockFrame = await Task.detached { MenuBarScanner.systemItemFrame(clock) }.value
+        clockFrame = await Task.detached { MenuBarScanner.systemItemFrame(clock).map(Self.clickArea) }.value
         // The tap needs the Accessibility permission, which can come after CleanBar started.
         startClockTap()
         updateClockTap()
@@ -378,24 +398,32 @@ final class MenuBarManager: NSObject {
 
     // MARK: Reading the menu bar
 
-    /// Reads the menu bar items of these apps, off the main thread.
+    /// Reads the menu bar items of these apps, off the main thread. `iconMemory` learns from it which apps have no icons
+    /// now. Apps macOS doesn't recognize aren't counted as kept out: their icons can't be let in to find out, so an icon
+    /// turned off in the app's own settings would stay in the floating bar for good.
     private func scan(_ targets: [ScanTarget]) async -> MenuBarScan {
         let strips = MenuBarStrip.all()
         let ownPID = ProcessInfo.processInfo.processIdentifier
-        return await Task.detached { MenuBarScanner.scan(targets, strips: strips, ownPID: ownPID) }.value
+        let hidden = hider.isActive ? iconsToHide.bundleIDs : []
+        let keptOut = Set(targets.filter { IconHider.isRecognized(appPath: $0.path) }.compactMap(\.bundleID)).intersection(hidden)
+        let scan = await Task.detached { MenuBarScanner.scan(targets, strips: strips, ownPID: ownPID) }.value
+        iconMemory.noteIcons(in: scan, keptOut: keptOut)
+        return scan
     }
 
-    private func scanItems(full: Bool = false) async -> MenuBarScan {
+    /// `onlyKnownApps`: not even when the last look at every app was a while ago, for when the answer can't wait.
+    private func scanItems(full: Bool = false, onlyKnownApps: Bool = false) async -> MenuBarScan {
         guard Permissions.accessibilityGranted else { return MenuBarScan(items: [], overflowButton: nil) }
         let ownPID = ProcessInfo.processInfo.processIdentifier
-        let isFull = full || extrasPIDs.isEmpty || Date.now.timeIntervalSince(lastFullScan) > 20
+        let isFull = full || extrasPIDs.isEmpty || (!onlyKnownApps && Date.now.timeIntervalSince(lastFullScan) > 20)
         var targets = ScanTarget.runningApps
         if !isFull {
             targets = targets.filter { extrasPIDs.contains($0.pid) }
         }
         let scan = await scan(targets)
         if isFull {
-            extrasPIDs = Set(scan.items.map(\.pid))
+            // While the editor is open, « can close for a moment, and apps with all their icons behind it then report none.
+            extrasPIDs = Set(scan.items.map(\.pid)).union(isEditingLayout ? extrasPIDs : [])
             extrasPIDs.insert(ownPID)
             if let agent = NSRunningApplication.runningApplications(withBundleIdentifier: MenuBarScanner.menuBarAgentBundleID).first {
                 extrasPIDs.insert(agent.processIdentifier)
@@ -405,11 +433,11 @@ final class MenuBarManager: NSObject {
         return scan
     }
 
-    func captureLayout(includePictures: Bool, reusing previousPictures: [String: ItemPicture]) async -> LayoutSnapshot {
-        var scan = await scanItems(full: true)
-        if await showIconsBehindOverflowButton(in: scan) {
-            scan = await scanItems()
-        }
+    /// `isQuick`: only the apps known to have icons, for reading the menu bar around a move. Asking every app takes seconds.
+    func captureLayout(includePictures: Bool, reusing previousPictures: [String: ItemPicture], isQuick: Bool = false) async -> LayoutSnapshot {
+        // First, since apps don't report the icons behind a closed «.
+        await showIconsBehindOverflowButton()
+        let scan = await scanItems(full: !isQuick, onlyKnownApps: isQuick)
         var pictures = previousPictures
         if includePictures {
             pictures.merge(await ItemImageCapture.pictures(for: scan.items)) { _, new in new }
@@ -455,71 +483,90 @@ final class MenuBarManager: NSObject {
 
     // MARK: Picturing new hidden icons
 
-    /// The floating bar shows hidden icons from pictures taken while they were in the menu bar. An app that opens while
-    /// CleanBar hides its icons never was, so the first time, its icons come into the menu bar for a moment to be
-    /// pictured, and hide again. Not for apps CleanBar can't let in on their own (running from elsewhere than
-    /// /Applications), nor in the other style, which doesn't show pictures.
+    /// How long an app that just opened gets to add its icons. A slow app can take this long to get going.
+    private static let newIconsWait: TimeInterval = 20
+
+    /// The floating bar shows hidden icons CleanBar remembers from when they were in the menu bar. An app that opens
+    /// while CleanBar hides its icons never was, and an icon that was never drawn doesn't exist for Accessibility (seen
+    /// on macOS 27.2), so nothing tells whether the app has one. So the first time, the app is let in for a moment: an
+    /// app without icons doesn't show at all, and the icons of one with icons come into the menu bar to be pictured, and
+    /// hide again. Not for apps CleanBar can't let in on their own (running from elsewhere than /Applications), for
+    /// processes that can't have icons, nor in the other style, which doesn't show pictures.
     private func pictureIconsSoon(of bundleIDs: [String]) {
         guard settings.hiddenIconsStyle == .floatingBar, Self.canHide else { return }
         let running = NSWorkspace.shared.runningApplications
-        let unseen = bundleIDs.filter { bundleID in
-            settings.hiddenBundleIDs.contains(bundleID) && !appsToPicture.contains(bundleID)
-                && !iconMemory.knowsIcons(ofApp: bundleID)
-                && running.contains { $0.bundleIdentifier == bundleID && IconHider.isRecognized(appPath: $0.bundleURL?.path) }
+        for bundleID in bundleIDs where settings.hiddenBundleIDs.contains(bundleID) && !iconMemory.knowsIcons(ofApp: bundleID)
+            && running.contains(where: {
+                $0.bundleIdentifier == bundleID && $0.activationPolicy != .prohibited
+                    && IconHider.isRecognized(appPath: $0.bundleURL?.path)
+            }) {
+            appsToPicture[bundleID] = .now + Self.newIconsWait
         }
-        appsToPicture += unseen
         guard !appsToPicture.isEmpty, picturingTask == nil else { return }
         picturingTask = Task { [weak self] in
             while let self, !self.appsToPicture.isEmpty {
-                await self.pictureIcons(of: self.appsToPicture.removeFirst())
+                await self.pictureNewIcons()
             }
             self?.picturingTask = nil
         }
     }
 
-    /// Waits for the app to add its icons, if it has any: they turn up out of the menu bar, not drawn. Then lets them
-    /// in until they're drawn and pictured. Icons macOS doesn't draw even then are turned off in System Settings, and are
-    /// remembered that way, so the floating bar leaves them out. Icons behind Apple's « can't be pictured; they will be
-    /// once opened from the floating bar.
-    private func pictureIcons(of bundleID: String) async {
-        let appTargets = { ScanTarget.runningApps.filter { $0.bundleID == bundleID } }
-        var hasIcons = false
-        let start = Date.now
-        while !hasIcons, Date.now.timeIntervalSince(start) < 15 {
-            try? await Task.sleep(for: .milliseconds(500))
-            let targets = appTargets()
-            // It quit.
-            guard !targets.isEmpty else { return }
-            hasIcons = !(await scan(targets).items.isEmpty)
-        }
-        // The user may have shown the app's icons meanwhile, or CleanBar may have seen them in the layout editor.
-        guard hasIcons, await Task.detached(operation: { Permissions.screenRecordingGranted }).value,
-              await waitUntilFreeToPicture(), settings.hiddenBundleIDs.contains(bundleID),
-              !iconMemory.knowsIcons(ofApp: bundleID)
-        else { return }
-
-        iconsBeingPictured = HiddenIcons(bundleIDs: [bundleID])
-        requestUpdate()
-        await updateTask?.value
-        let targets = appTargets() + ScanTarget.runningApps.filter { $0.bundleID == MenuBarScanner.menuBarAgentBundleID }
-        let shownAt = Date.now
-        var appItems: [MenuBarItem] = []
-        // macOS draws them within a few tenths of a second, unless they don't fit.
-        while Date.now.timeIntervalSince(shownAt) < 2, !isEditingLayout {
-            try? await Task.sleep(for: .milliseconds(100))
-            let latest = await scan(targets)
-            appItems = latest.items.filter { $0.bundleID == bundleID }
-            if appItems.contains(where: \.isOnScreen)
-                || (Date.now.timeIntervalSince(shownAt) > 0.5 && appItems.contains(where: latest.isBehindOverflowButton)) {
+    /// Lets the apps in `appsToPicture` into the menu bar until their icons are drawn and pictured, or their time is up.
+    /// Most apps have no icons, so they go in side by side and one doesn't hold up another. Without Screen Recording the
+    /// icons are only noted, and the floating bar shows the app's logo for them.
+    ///
+    /// Icons macOS parks outside the menu bar are turned off in System Settings, and are remembered that way, so the
+    /// floating bar leaves them out. Icons behind Apple's « can't be pictured; they will be once opened from the floating
+    /// bar. On macOS 27.2 an app with all its icons behind a closed « reports none, so it's looked at again the next time
+    /// it opens.
+    private func pictureNewIcons() async {
+        let canPicture = await Task.detached { Permissions.screenRecordingGranted }.value
+        var reportedAt: [String: Date] = [:]
+        while !appsToPicture.isEmpty {
+            guard await waitUntilFreeToPicture() else {
+                appsToPicture.removeAll()
                 break
             }
-        }
-        let drawn = appItems.filter(\.isOnScreen)
-        if !drawn.isEmpty {
-            let pictures = await ItemImageCapture.pictures(for: drawn)
-            iconMemory.remember(MenuBarScan(items: drawn, overflowButton: nil), pictures: pictures, isFullMenuBar: false)
-        } else if !isEditingLayout {
-            iconMemory.rememberTurnedOff(appItems.filter { $0.strip == nil })
+            // The user may have shown the app's icons meanwhile, the app may have quit, or CleanBar may have seen its
+            // icons in the layout editor.
+            let running = ScanTarget.runningApps
+            appsToPicture = appsToPicture.filter { bundleID, deadline in
+                deadline > .now && settings.hiddenBundleIDs.contains(bundleID)
+                    && !iconMemory.knowsIcons(ofApp: bundleID, needsPicture: canPicture)
+                    && running.contains { $0.bundleID == bundleID }
+            }
+            let letIn = Set(appsToPicture.keys)
+            if letIn != iconsBeingPictured.bundleIDs {
+                iconsBeingPictured = HiddenIcons(bundleIDs: letIn)
+                requestUpdate()
+                await updateTask?.value
+            }
+            guard !letIn.isEmpty else { break }
+
+            try? await Task.sleep(for: .milliseconds(250))
+            let latest = await scan(running.filter { target in
+                target.bundleID.map { letIn.contains($0) || $0 == MenuBarScanner.menuBarAgentBundleID } ?? false
+            })
+            for bundleID in letIn.sorted() {
+                let appItems = latest.items.filter { $0.bundleID == bundleID }
+                guard !appItems.isEmpty else { continue }
+                let since = reportedAt[bundleID] ?? .now
+                reportedAt[bundleID] = since
+                let waited = Date.now.timeIntervalSince(since)
+                let drawn = appItems.filter(\.isOnScreen)
+                // macOS draws them within a few tenths of a second, unless they don't fit. It's given a moment in case
+                // the app's other icons are still coming, and for the other icons to slide over and make room.
+                if !drawn.isEmpty, waited >= 0.3 {
+                    let pictures = await ItemImageCapture.pictures(for: drawn, settle: .milliseconds(200))
+                    iconMemory.remember(MenuBarScan(items: drawn, overflowButton: nil), pictures: pictures, isFullMenuBar: false)
+                    appsToPicture[bundleID] = nil
+                } else if drawn.isEmpty, waited > 2 || (waited > 0.5 && appItems.contains(where: latest.isBehindOverflowButton)) {
+                    if !isEditingLayout {
+                        iconMemory.rememberTurnedOff(appItems.filter { $0.strip == nil })
+                    }
+                    appsToPicture[bundleID] = nil
+                }
+            }
         }
         iconsBeingPictured = HiddenIcons()
         requestUpdate()
@@ -681,7 +728,7 @@ final class MenuBarManager: NSObject {
 
     /// Clicks « again if it's still showing the icons behind it.
     private func closeOverflow() async {
-        if await scanItems().isOverflowOpen {
+        if await scanItems(onlyKnownApps: true).isOverflowOpen {
             _ = await clickOverflowButton()
         }
     }
@@ -720,9 +767,47 @@ final class MenuBarManager: NSObject {
         closeFloatingBar()
         endReveal()
         autoHideTask?.cancel()
+        failedOverflowClicks = 0
         requestUpdate()
         await updateTask?.value
         placeNewIconsSoon()
+        watchMenuBarWhileEditing()
+    }
+
+    /// Icons keep changing after the editor read the menu bar: those that were hidden take a moment to come back, and only
+    /// then go behind Apple's «, which closes by itself after some clicks and drags. So every moment the editor looks again,
+    /// and when « closed or the menu bar looks different, reads it again, which opens «.
+    private func watchMenuBarWhileEditing() {
+        editorWatchTask?.cancel()
+        editorWatchTask = Task { [weak self] in
+            var lastChanged: [String]?
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(1.5))
+                guard let self, !Task.isCancelled else { return }
+                lastChanged = await self.refreshEditorIfMenuBarChanged(since: lastChanged)
+            }
+        }
+    }
+
+    /// Reads the menu bar once « has closed, or once the same change has been seen twice, so an icon sliding or an app slow to
+    /// answer doesn't count. Only once the user has left the mouse alone for a moment, since clicking « hides the pointer and
+    /// could get in the way of a drag about to start, and not while the editor is in the background: « would cover the menus
+    /// of the app in front. Returns the change seen and not acted on yet.
+    private func refreshEditorIfMenuBarChanged(since lastChanged: [String]?) async -> [String]? {
+        guard canRefreshEditor else { return nil }
+        let scan = await scanItems(onlyKnownApps: true)
+        guard canRefreshEditor, let snapshot = layout.snapshot else { return nil }
+        if scan.isOverflowClosed, failedOverflowClicks < Self.overflowClickLimit {
+            await layout.refresh()
+            return nil
+        }
+        let drawn = LayoutSnapshot(scan: scan, hiddenIcons: settings.hiddenIcons, pictures: [:]).drawnIDs
+        guard drawn != snapshot.drawnIDs else { return nil }
+        if drawn == lastChanged {
+            await layout.refresh()
+            return nil
+        }
+        return drawn
     }
 
     /// The editor can only read and move icons that are in the menu bar, so icons hidden with CleanBar's icon while it's
@@ -739,8 +824,14 @@ final class MenuBarManager: NSObject {
         }
     }
 
+    private var canRefreshEditor: Bool {
+        isEditingLayout && isShowingHidden && NSApp.isActive && !layout.isWorking && !isPlacingNewIcons && Self.isUserIdle
+    }
+
     /// Closes « first if the editor left it open: the icons it shows would cover the next app's menus.
     func endLayoutEditing() {
+        editorWatchTask?.cancel()
+        editorWatchTask = nil
         isEditingLayout = false
         isShowingHidden = false
         closeEditingNote()
@@ -755,16 +846,27 @@ final class MenuBarManager: NSObject {
 
     /// While the editor is open, icons that don't fit in the menu bar are brought out from behind Apple's «, so they
     /// can be pictured and moved like the others: clicking « shows them in place of the app menus. It's a click, so it
-    /// waits for the user to let go of the mouse and modifier keys. Returns whether « was opened.
-    private func showIconsBehindOverflowButton(in scan: MenuBarScan) async -> Bool {
-        guard isEditingLayout, !isPlacingNewIcons, !scan.isOverflowOpen,
-              scan.items.contains(where: { !$0.isOnScreen && scan.isBehindOverflowButton($0) })
-        else { return false }
+    /// waits for the user to let go of the mouse and modifier keys. Should it not open, CleanBar stops trying after a few
+    /// clicks, until the editor opens again.
+    private func showIconsBehindOverflowButton() async {
+        guard isEditingLayout, !isPlacingNewIcons, failedOverflowClicks < Self.overflowClickLimit,
+              await scanItems(onlyKnownApps: true).isOverflowClosed
+        else { return }
         let isNothingHeld = await Self.waitUntilNothingHeld(for: 2)
-        guard isEditingLayout, isNothingHeld, await clickOverflowButton() else { return false }
-        try? await Task.sleep(for: .milliseconds(700))
-        return true
+        guard isEditingLayout, isNothingHeld, await clickOverflowButton() else { return }
+        for _ in 0..<7 {
+            try? await Task.sleep(for: .milliseconds(200))
+            if await scanItems(onlyKnownApps: true).isOverflowOpen {
+                failedOverflowClicks = 0
+                // The icons take a moment to land.
+                try? await Task.sleep(for: .milliseconds(300))
+                return
+            }
+        }
+        failedOverflowClicks += 1
     }
+
+    private static let overflowClickLimit = 3
 
     // MARK: Clicks
 
@@ -775,7 +877,7 @@ final class MenuBarManager: NSObject {
             return
         }
         // With nothing to hide there's nothing to show either, so offer the menu instead.
-        guard Self.canHide, !settings.hiddenIcons.isEmpty else {
+        guard Self.canHide, settings.hasHiddenIcons else {
             icon.showMenu(makeContextMenu())
             return
         }
@@ -871,16 +973,16 @@ final class MenuBarManager: NSObject {
 
     /// Hovering over empty menu bar space doesn't show the hidden icons while the layout editor is open, but says why.
     private var canNoteEditingOnHover: Bool {
-        isEditingLayout && Self.canHide && !settings.hiddenIcons.isEmpty && !editingNote.isOpen && !isPlacingNewIcons
+        isEditingLayout && Self.canHide && settings.hasHiddenIcons && !editingNote.isOpen && !isPlacingNewIcons
             && NSEvent.pressedMouseButtons == 0 && !WindowInfo.isMenuOpen()
     }
 
     // MARK: Notification Center
 
     /// Notification Center doesn't open while icons are hidden, neither from the clock nor with the Show Notification
-    /// Center shortcut. A click on the clock pauses hiding for a few hundredths of a second, presses the clock and hides
-    /// again. Notification Center opens a tenth of a second later all the same and stays open. `clockTap` keeps the click
-    /// itself from the menu bar; this is for when it can't run.
+    /// Center shortcut. A click on the clock pauses hiding for about a tenth of a second, while CleanBar clicks the clock
+    /// itself, and hides again. Notification Center opens a moment later all the same and stays open. `clockTap` keeps
+    /// the click itself from the menu bar; this is for when it can't run.
     private func handleMouseDown() {
         guard !clockTap.isRunning, hider.isActive, notificationCenterTask == nil, let clockFrame,
               clockFrame.contains(Self.mouseLocationInScreenPoints),
@@ -899,7 +1001,11 @@ final class MenuBarManager: NSObject {
         guard hider.isActive else {
             // Hiding stopped just before, so the clock works by itself again: the click goes to it.
             let clock = Self.clockIdentifier
-            Task.detached { _ = MenuBarScanner.pressSystemItem(clock) }
+            Task.detached {
+                if let frame = MenuBarScanner.systemItemFrame(clock) {
+                    Self.click(clockAt: frame)
+                }
+            }
             return
         }
         startOpeningNotificationCenter()
@@ -925,38 +1031,64 @@ final class MenuBarManager: NSObject {
         updateClockTap()
     }
 
-    /// Pressed while Control Center hasn't heard yet that hiding paused, the clock still does nothing. Control Center hears
-    /// it from macOS 10–30 ms after hiding pauses, and so does CleanBar (`IconHider.restrictions`), so the clock is
-    /// pressed right then and hiding resumes right after: macOS takes the list back as soon as it has brought the hidden
-    /// icons back, as they start sliding in, so they're gone again before they show much. A fixed pause was sometimes too
-    /// short (2 of 4 tries on macOS 27.0.1, 20 ms after hiding paused), and then hiding paused a second time.
+    /// The clock has to be clicked: pressed over Accessibility, it opens Notification Center, which closes again 50–100 ms
+    /// later, with or without hidden icons (seen on macOS 27.2; on 27.0.1 it stayed open).
     ///
-    /// When macOS doesn't say, a fixed pause instead. If Notification Center doesn't open, once more, waiting longer.
+    /// Clicked while Control Center hasn't heard yet that hiding paused, the clock still does nothing. Control Center hears
+    /// it from macOS 10–30 ms after hiding pauses, and hears that hiding resumed as long after it resumes. A click takes
+    /// longer to get to Control Center, since macOS first waits to tell it from other gestures: 47–74 ms after it was
+    /// posted (seen on macOS 27.2). So the click goes as soon as hiding has paused, and hiding resumes once the click has
+    /// surely got there. macOS brings the hidden icons back meanwhile, so they show for a moment.
+    ///
+    /// The click waits for macOS to say hiding paused (`IconHider.restrictions`): posted straight away, it got to Control
+    /// Center first 4 times out of 9 (47–64 ms after hiding paused, seen on macOS 27.2) and only the second try opened it,
+    /// most of a second later. If Notification Center still doesn't open, once more, resuming later.
     private func openNotificationCenter() async {
         let clock = Self.clockIdentifier
         let restrictions = hider.restrictions
-        // Milliseconds to wait after macOS says hiding paused, or after pausing when it doesn't say.
-        for (afterWord, pause) in [(5, 20), (60, 80)] {
-            let pressed = await Task.detached { [weak self] in
+        // Whether the click waits for macOS to say hiding paused, and milliseconds from the click until hiding resumes.
+        for (waitsForWord, pause) in [(true, 120), (true, 180)] {
+            let clicked = await Task.detached { [weak self] in
                 // Found before hiding pauses, since that can take a while.
-                guard let item = MenuBarScanner.systemItem(clock) else { return false }
+                guard let frame = MenuBarScanner.systemItemFrame(clock) else { return false }
                 await self?.pauseHidingForNotificationCenter()
-                // It normally comes within 30 ms.
-                switch await restrictions.waitUntilLifted(timeout: 0.06) {
-                case true?: try? await Task.sleep(for: .milliseconds(afterWord), tolerance: .zero)
-                case false?: break
-                case nil: try? await Task.sleep(for: .milliseconds(pause))
+                if waitsForWord {
+                    _ = await restrictions.waitUntilLifted(timeout: 0.1)
                 }
-                let pressed = AX.press(item)
+                let clickedAt = ContinuousClock.now
+                Self.click(clockAt: frame)
+                try? await Task.sleep(until: clickedAt + .milliseconds(pause), tolerance: .zero, clock: .continuous)
                 await self?.resumeHidingAfterNotificationCenter()
-                return pressed
+                return true
             }.value
-            guard pressed else { return }
-            for _ in 0..<12 {
+            guard clicked else { return }
+            // Its window shows about 170 ms after the click; clicking again while it opens would close it.
+            for _ in 0..<6 {
                 try? await Task.sleep(for: .milliseconds(50))
                 if WindowInfo.isNotificationCenterOpen() { return }
             }
         }
+    }
+
+    /// Clicks the clock where the pointer is, when it's on the clock, as when the user just clicked it, so it doesn't
+    /// move. Otherwise in the middle, and the pointer goes back. CleanBar's click gets past `clockTap`.
+    private nonisolated static func click(clockAt frame: CGRect) {
+        let pointer = CGEvent(source: nil)?.location
+        // Its frame's edges don't always take clicks, so the click goes well inside it, at the same height as the middle.
+        let inside = frame.insetBy(dx: min(10, frame.width / 4), dy: 0)
+        let point = pointer.flatMap { clickArea(frame).contains($0) ? $0 : nil }
+            .map { CGPoint(x: min(max($0.x, inside.minX), inside.maxX), y: frame.midY) }
+            ?? CGPoint(x: frame.midX, y: frame.midY)
+        ItemMover.clickNow(at: point)
+    }
+
+    /// The clock takes clicks over the whole height of the menu bar and in the gaps beside it, but its Accessibility frame
+    /// is centered with space above and below (22 pt in a 33 pt menu bar on a Mac with a notch). As the last item it also
+    /// takes the 20 pt or so up to the screen's right edge, top right corner included.
+    private nonisolated static func clickArea(_ frame: CGRect) -> CGRect {
+        let screenRight = CGDisplayBounds(CGMainDisplayID()).maxX
+        let right = screenRight - frame.maxX < 40 ? screenRight : frame.maxX + 8
+        return CGRect(x: frame.minX - 8, y: 0, width: right - frame.minX + 8, height: frame.maxY + frame.minY)
     }
 
     /// The list to hide with again is made first: building it takes a few milliseconds.
@@ -970,10 +1102,9 @@ final class MenuBarManager: NSObject {
         await updateTask?.value
     }
 
-    /// Hides again straight away, without waiting for updates in line. As soon as hiding pauses, macOS starts bringing
-    /// the hidden icons back, which keeps it busy for a few hundredths of a second, and a list that comes in meanwhile
-    /// waits until it's done (seen on macOS 27.0.1: 25–40 ms after hiding paused). The update after it only catches up
-    /// with changes made meanwhile.
+    /// Hides again straight away, without waiting for updates in line: macOS is still bringing the hidden icons back,
+    /// and takes a list that comes in meanwhile as soon as it's done (see `IconHider`). The update after it only catches
+    /// up with changes made meanwhile.
     private func resumeHidingAfterNotificationCenter() async {
         isPausedForNotificationCenter = false
         if let list = listAfterNotificationCenter, shouldHide {
@@ -1028,6 +1159,7 @@ final class MenuBarManager: NSObject {
     private func runningAppsChanged(launched: [String]) {
         lastFullScan = .distantPast
         guard !launched.isEmpty else { return }
+        iconMemory.noteLaunch(of: launched)
         noteNewApps()
         pictureIconsSoon(of: launched)
         guard launched.contains(MenuBarScanner.menuBarAgentBundleID) else {
@@ -1048,6 +1180,7 @@ final class MenuBarManager: NSObject {
     @objc private func settingsChanged() {
         registerHotKey()
         applyIconSettings()
+        sensors.settingsChanged()
         updatePointerMonitors()
         if !settings.autoHide {
             autoHideTask?.cancel()
@@ -1079,7 +1212,7 @@ final class MenuBarManager: NSObject {
         guard settings.hotKey != registeredHotKey else { return }
         registeredHotKey = settings.hotKey
         HotKeyCenter.shared.register(settings.hotKey) { [weak self] in
-            guard let self, Self.canHide, !self.settings.hiddenIcons.isEmpty else { return }
+            guard let self, Self.canHide, self.settings.hasHiddenIcons else { return }
             self.toggleHiddenIcons()
         }
     }
@@ -1087,8 +1220,8 @@ final class MenuBarManager: NSObject {
     // MARK: Floating bar
 
     /// Opens the floating bar below CleanBar's icon, or below the pointer, or closes it. It opens with the icons CleanBar
-    /// remembers, then asks the apps, which takes a moment, and takes in what changed: icons of new apps that were hidden
-    /// from the start, or icons an app no longer has.
+    /// remembers, then asks the apps, which takes a moment, and takes in what changed: icons being let in for the first
+    /// time (`pictureIconsSoon`), or icons an app no longer has.
     private func toggleFloatingBar(at pointer: NSPoint?) {
         if floatingBar.isOpen {
             closeFloatingBar()
@@ -1104,7 +1237,8 @@ final class MenuBarManager: NSObject {
         guard Permissions.accessibilityGranted else { return }
         let hidden = settings.hiddenIcons
         let ownPID = ProcessInfo.processInfo.processIdentifier
-        // Apps keep their icons while they're out of the menu bar. macOS's own leave the Accessibility tree.
+        // Apps keep the icons that have been drawn while they're out of the menu bar. macOS's own leave the Accessibility
+        // tree.
         let targets = ScanTarget.runningApps.filter { app in
             guard let bundleID = app.bundleID, app.pid != ownPID, !MenuBarItem.systemBundleIDs.contains(bundleID) else {
                 return false
@@ -1143,8 +1277,8 @@ final class MenuBarManager: NSObject {
     }
 
     private func isOnIcon(_ location: NSPoint) -> Bool {
-        guard icon.isVisible, let frame = icon.frameOnScreen else { return false }
-        return NSMouseInRect(location, frame, false)
+        guard let area = icon.clickArea else { return false }
+        return NSMouseInRect(location, area, false)
     }
 
     private func closeFloatingBar() {
@@ -1163,22 +1297,48 @@ final class MenuBarManager: NSObject {
     /// What the floating bar shows: the icons out of the menu bar while CleanBar hides icons, in menu bar order, with
     /// their pictures. Those are the hidden icons, and the icons of apps macOS doesn't recognize, which go too.
     ///
-    /// `reported`: the icons apps reported when asked, nil before they're asked. An app that reports none gets the icons
-    /// CleanBar remembers, as do macOS's own icons, which leave the Accessibility tree when they're hidden.
+    /// `reported`: the icons apps reported when asked, nil before they're asked. An app that didn't answer gets the icons
+    /// CleanBar remembers, as do macOS's own icons, which leave the Accessibility tree when they're hidden, and an app
+    /// that opened with its icons hidden, which can't tell yet. Any other app that answered it has none, like one whose
+    /// icon is turned off in its own settings, gets none (`IconMemory.noteIcons`).
     private func floatingBarItems(reported: [MenuBarItem]?) -> (items: [MenuBarItem], pictures: [String: ItemPicture]) {
         let hidden = settings.hiddenIcons
         let reported = reported ?? []
         let reportingApps = Set(reported.compactMap(\.bundleID))
         let remembered = iconMemory.items(of: ScanTarget.runningApps).filter { !reportingApps.contains($0.bundleID ?? "") }
-        let items = (reported + remembered)
+        let sensorItem = hidden.sensorItem ? Self.hiddenSensorItem() : nil
+        let items = ((reported + remembered)
             .filter { item in
                 item.canBeHidden && !iconMemory.isTurnedOff(item) && (hidden.contains(item) || !item.isRecognizedByMacOS)
-            }
+            } + (sensorItem.map { [$0] } ?? []))
             .sorted { iconMemory.place(of: $0) < iconMemory.place(of: $1) }
-        let pictures = items.reduce(into: [String: ItemPicture]()) { pictures, item in
+        var pictures = items.reduce(into: [String: ItemPicture]()) { pictures, item in
             pictures[item.id] = iconMemory.picture(for: item)
         }
+        if let sensorItem {
+            pictures[sensorItem.id] = sensors.itemPicture
+        }
         return (items, pictures)
+    }
+
+    /// CleanBar's temperature while it's out of the menu bar, where the scanner can't find it, as the scanner would name it.
+    private static func hiddenSensorItem() -> MenuBarItem {
+        let target = ScanTarget(NSRunningApplication.current)
+        return MenuBarItem(
+            id: "\(target.bundleID ?? "pid-\(target.pid)")#\(ControlRole.sensors.rawValue)",
+            pid: target.pid,
+            axIndex: -1,
+            bundleID: target.bundleID,
+            appName: target.name,
+            appPath: target.path,
+            identifier: ControlRole.sensors.rawValue,
+            label: ControlRole.sensors.accessibilityLabel,
+            frame: .zero,
+            strip: nil,
+            isOnScreen: false,
+            controlRole: .sensors,
+            supportsPress: false
+        )
     }
 
     // MARK: Empty menu bar space
@@ -1191,7 +1351,7 @@ final class MenuBarManager: NSObject {
         }
         let isPlain = modifiers.isDisjoint(with: .shortcutKeys)
         Task {
-            if isPlain, Self.canHide, !settings.hiddenIcons.isEmpty, !isPlacingNewIcons,
+            if isPlain, Self.canHide, settings.hasHiddenIcons, !isPlacingNewIcons,
                await Self.isEmptyMenuBarSpace(at: location) {
                 toggleHiddenIcons(at: location)
             } else {
@@ -1308,7 +1468,7 @@ final class MenuBarManager: NSObject {
     /// Hovering doesn't show the hidden icons while they're showing or in use (a menu is open, or one is open from the
     /// floating bar), while the layout editor shows them anyway, or while a mouse button is held, as in a drag.
     private var canShowOnHover: Bool {
-        Self.canHide && !settings.hiddenIcons.isEmpty && !isEditingLayout && !isShowingHidden && !floatingBar.isOpen
+        Self.canHide && settings.hasHiddenIcons && !isEditingLayout && !isShowingHidden && !floatingBar.isOpen
             && !isRevealing && !isPlacingNewIcons && NSEvent.pressedMouseButtons == 0 && !WindowInfo.isMenuOpen()
     }
 
@@ -1321,6 +1481,10 @@ final class MenuBarManager: NSObject {
     /// menu has closed.
     private func reveal(_ item: MenuBarItem, click: ItemClick) {
         closeFloatingBar()
+        if item.controlRole == .sensors {
+            sensors.open(click, below: floatingBarAnchor, on: floatingBarScreen)
+            return
+        }
         revealGeneration += 1
         let generation = revealGeneration
         let previous = revealTask
@@ -1383,17 +1547,17 @@ final class MenuBarManager: NSObject {
             // The same icon of the app, or else the app's only one. macOS's own icons go by their identifier.
             let current = appItems.first { $0.placeKey == item.placeKey }
                 ?? (item.isSystemItem || appItems.count != 1 ? nil : appItems.first)
-            if let current {
-                if current.isOnScreen {
-                    return (current, openedOverflow)
-                }
-                // Right after the list changes, an icon can still report where it was.
-                if !openedOverflow, Date.now.timeIntervalSince(start) > 0.3, scan.isBehindOverflowButton(current),
-                   Self.isNothingHeld, await clickOverflowButton() {
-                    openedOverflow = true
-                    try? await Task.sleep(for: .milliseconds(700))
-                    continue
-                }
+            if let current, current.isOnScreen {
+                return (current, openedOverflow)
+            }
+            // Right after the list changes, an icon can still report where it was. Behind a closed «, an app may report
+            // no icons at all.
+            let isBehindOverflow = current.map(scan.isBehindOverflowButton) ?? scan.isOverflowClosed
+            if !openedOverflow, Date.now.timeIntervalSince(start) > 0.3, isBehindOverflow,
+               Self.isNothingHeld, await clickOverflowButton() {
+                openedOverflow = true
+                try? await Task.sleep(for: .milliseconds(700))
+                continue
             }
             try? await Task.sleep(for: .milliseconds(50))
         }
@@ -1438,20 +1602,11 @@ final class MenuBarManager: NSObject {
         return current
     }
 
-    /// Clicks the icon in the menu bar the way it was clicked in the floating bar. A plain click is an Accessibility
-    /// press. Right clicks and clicks with modifier keys are posted as mouse events at the icon, which has just been
-    /// hit-tested, as is a plain click the icon can't take as a press, with the pointer hidden meanwhile. Never both: a
-    /// click on top of a press that went through would close the menu it opened.
+    /// Clicks the icon in the menu bar the way it was clicked in the floating bar: mouse events posted at the icon, which
+    /// has just been hit-tested, with the pointer hidden meanwhile. Not an Accessibility press, even for a plain click:
+    /// some apps only open their menu for a real mouse-up (NordVPN checks `NSApp.currentEvent` is a mouse-up and does
+    /// nothing otherwise), yet the press still reports success, so nothing would open.
     private func press(_ item: MenuBarItem, _ click: ItemClick) async {
-        if click.isPlain {
-            let pressed = await Task.detached {
-                if item.isSystemItem, let identifier = item.identifier {
-                    return MenuBarScanner.pressSystemItem(identifier)
-                }
-                return item.supportsPress && MenuBarScanner.press(item)
-            }.value
-            if pressed { return }
-        }
         await ItemMover.click(at: item.center, isRightClick: click.isRightClick, flags: click.eventFlags)
     }
 

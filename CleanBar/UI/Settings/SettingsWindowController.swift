@@ -4,6 +4,7 @@ import SwiftUI
 nonisolated enum SettingsTab: Hashable, CaseIterable, Identifiable {
     case layout
     case general
+    case sensors
     case permissions
     case about
 
@@ -13,6 +14,7 @@ nonisolated enum SettingsTab: Hashable, CaseIterable, Identifiable {
         switch self {
         case .layout: String(localized: "Menu Bar Layout")
         case .general: String(localized: "General")
+        case .sensors: String(localized: "Sensors")
         case .permissions: String(localized: "Permissions")
         case .about: String(localized: "About")
         }
@@ -23,6 +25,7 @@ nonisolated enum SettingsTab: Hashable, CaseIterable, Identifiable {
         switch self {
         case .layout: "menubar.rectangle"
         case .general: "gearshape.fill"
+        case .sensors: "thermometer.medium"
         case .permissions: "hand.raised.fill"
         case .about: "info.circle.fill"
         }
@@ -32,6 +35,7 @@ nonisolated enum SettingsTab: Hashable, CaseIterable, Identifiable {
         switch self {
         case .layout: .blue
         case .general: .gray
+        case .sensors: .orange
         case .permissions: .indigo
         case .about: .gray
         }
@@ -83,7 +87,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     }
 
     private func makeWindow(manager: MenuBarManager) -> NSWindow {
-        let root = SettingsView(router: router, settings: manager.settings, layout: manager.layout, permissions: PermissionStatus())
+        let root = SettingsView(router: router, settings: manager.settings, layout: manager.layout, sensors: manager.sensors, permissions: PermissionStatus())
         let controller = NSHostingController(rootView: root)
         // Each pane's title and buttons go in the window's toolbar, as in System Settings.
         controller.sceneBridgingOptions = [.title, .toolbars]
@@ -103,10 +107,21 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         window.isReleasedWhenClosed = false
         // Setting the controller sized the window to its content.
         window.setContentSize(NSSize(width: 860, height: 640))
-        window.center()
+        center(window)
         window.delegate = self
         pinSidebar(in: controller.view)
         return window
+    }
+
+    /// Right in the middle of the screen the pointer is on, as that's where the click that opens it was. `NSWindow.center()` puts
+    /// it above the middle, on the screen it happens to be on.
+    private func center(_ window: NSWindow) {
+        let pointer = NSEvent.mouseLocation
+        guard let area = (NSScreen.screens.first { NSMouseInRect(pointer, $0.frame, false) } ?? NSScreen.main)?.visibleFrame else { return }
+        window.setFrameOrigin(NSPoint(
+            x: (area.midX - window.frame.width / 2).rounded(),
+            y: (area.midY - window.frame.height / 2).rounded()
+        ))
     }
 
     /// Keeps the sidebar one width and always showing, like System Settings'. SwiftUI's sidebar can be dragged wider,
@@ -202,6 +217,7 @@ struct SettingsView: View {
     let router: SettingsRouter
     let settings: AppSettings
     let layout: LayoutModel
+    let sensors: SensorsController
     let permissions: PermissionStatus
 
     /// The sidebar is always this wide, like System Settings'. `SettingsWindowController` keeps it that way.
@@ -229,6 +245,8 @@ struct SettingsView: View {
                 LayoutView(model: layout, router: router, settings: settings)
             case .general:
                 GeneralView(settings: settings)
+            case .sensors:
+                SensorsView(settings: settings, sensors: sensors)
             case .permissions:
                 PermissionsView(permissions: permissions)
             case .about:

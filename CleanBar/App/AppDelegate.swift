@@ -25,6 +25,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // Back where the language was picked.
             manager.showSettings(tab: .general)
         }
+
+        UpdateChecker.shared.start()
     }
 
     // Opening CleanBar again from Finder or Spotlight shows its settings, since it has no Dock icon.

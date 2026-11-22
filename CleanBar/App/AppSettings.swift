@@ -21,15 +21,20 @@ struct HotKeyCombo: Codable, Equatable {
     }
 }
 
-/// The icons CleanBar hides: other apps' icons app by app, and macOS's own icons one by one.
+/// The icons CleanBar hides: other apps' icons app by app, macOS's own icons one by one, and CleanBar's temperature.
 nonisolated struct HiddenIcons: Sendable {
     var bundleIDs: Set<String> = []
     var systemItems: Set<SystemMenuItem> = []
+    /// CleanBar's own temperature. macOS's list goes by app and would take CleanBar's icon with it, so CleanBar takes this
+    /// one out of the menu bar itself (`SensorsController.keepsItemOut`).
+    var sensorItem = false
 
+    /// Whether macOS's list has nothing to keep out. `AppSettings.hasHiddenIcons` counts the temperature too.
     var isEmpty: Bool { bundleIDs.isEmpty && systemItems.isEmpty }
 
     /// The item's app, or the item alone when it's one of macOS's own.
     init(_ item: MenuBarItem) {
+        guard item.controlRole == nil else { return }
         if let systemItem = item.systemItem {
             systemItems = [systemItem]
         } else if let bundleID = item.bundleID {
@@ -43,6 +48,9 @@ nonisolated struct HiddenIcons: Sendable {
     }
 
     func contains(_ item: MenuBarItem) -> Bool {
+        if item.controlRole != nil {
+            return item.controlRole == .sensors && sensorItem
+        }
         if let systemItem = item.systemItem {
             return systemItems.contains(systemItem)
         }
@@ -144,7 +152,8 @@ nonisolated enum AppAppearance: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
-/// User preferences, stored in `UserDefaults`. Every change is also broadcast through `AppSettings.didChange`.
+/// User preferences, stored in `UserDefaults`. Changes the menu bar depends on are also broadcast through
+/// `AppSettings.didChange`.
 @Observable
 final class AppSettings {
     static let shared = AppSettings()
@@ -153,6 +162,7 @@ final class AppSettings {
     private enum Key {
         static let hiddenBundleIDs = "hiddenBundleIDs"
         static let hiddenSystemItems = "hiddenSystemItems"
+        static let hidesSensorItem = "hidesSensorItem"
         static let hidesNewIcons = "hidesNewIcons"
         static let newIconsPlace = "newIconsPlace"
         static let knownBundleIDs = "knownBundleIDs"
@@ -164,6 +174,17 @@ final class AppSettings {
         static let autoHideDelay = "autoHideDelay"
         static let hotKey = "hotKey"
         static let appearance = "appearance"
+        static let showsSensors = "showsSensors"
+        static let menuBarSensor = "menuBarSensor"
+        static let sensorIconColor = "sensorIconColor"
+        static let sensorIconSize = "sensorIconSize"
+        static let sensorOrder = "sensorOrder"
+        static let hiddenSensors = "hiddenSensors"
+        static let showsSensorListIcons = "showsSensorListIcons"
+        static let historyRange = "historyRange"
+        static let fanProfiles = "fanProfiles"
+        static let fanDefaultMode = "fanDefaultMode"
+        static let fanRules = "fanRules"
         /// macOS's own key for the languages an app prefers.
         static let language = "AppleLanguages"
     }
@@ -178,7 +199,22 @@ final class AppSettings {
         didSet { save(hiddenSystemItems.map(\.identifier).sorted(), Key.hiddenSystemItems) }
     }
 
-    var hiddenIcons: HiddenIcons { HiddenIcons(bundleIDs: hiddenBundleIDs, systemItems: hiddenSystemItems) }
+    /// CleanBar's temperature is among the hidden icons. Turning Sensors off and on brings it back to the menu bar, or the
+    /// setting would seem to do nothing.
+    var hidesSensorItem: Bool {
+        didSet { save(hidesSensorItem, Key.hidesSensorItem) }
+    }
+
+    var hiddenIcons: HiddenIcons {
+        var icons = HiddenIcons(bundleIDs: hiddenBundleIDs, systemItems: hiddenSystemItems)
+        icons.sensorItem = showsSensors && hidesSensorItem
+        return icons
+    }
+
+    var hasHiddenIcons: Bool {
+        let icons = hiddenIcons
+        return !icons.isEmpty || icons.sensorItem
+    }
 
     /// Hide the icons of apps CleanBar hasn't seen before, instead of showing them. It's where the layout editor's
     /// "New icons appear here" marker is.
@@ -244,7 +280,6 @@ final class AppSettings {
 
     /// Light or dark for CleanBar's windows, or `.system` to look like the Mac. It takes effect right away.
     var appearance: AppAppearance {
-        // Nothing in the menu bar changes with it, so there's nothing to broadcast.
         didSet {
             defaults.set(appearance.rawValue, forKey: Key.appearance)
             NSApp.appearance = appearance.nsAppearance
@@ -255,8 +290,73 @@ final class AppSettings {
     /// language macOS keeps for CleanBar (System Settings → General → Language & Region → Applications sets it too), and
     /// macOS applies it when CleanBar starts.
     var language: String? {
-        // Nothing running changes with it, so there's nothing to broadcast.
         didSet { defaults.set(language.map { [$0] }, forKey: Key.language) }
+    }
+
+    /// Show a second icon in the menu bar, with the Mac's temperature. Clicking it lists the sensors and fans.
+    var showsSensors: Bool {
+        didSet {
+            if !showsSensors, hidesSensorItem {
+                hidesSensorItem = false
+            }
+            save(showsSensors, Key.showsSensors)
+        }
+    }
+
+    /// The sensor whose temperature the icon shows, or `TemperatureSensor.noneID` for a symbol with no temperature.
+    var menuBarSensor: String {
+        didSet { save(menuBarSensor, Key.menuBarSensor) }
+    }
+
+    /// The temperature's color in the menu bar. Nil looks like the rest of the menu bar.
+    var sensorIconColor: NSColor? {
+        didSet { save(sensorIconColor.flatMap(Self.components(of:)), Key.sensorIconColor) }
+    }
+
+    /// The temperature's size in the menu bar, in points. Within `sensorIconSizes`.
+    var sensorIconSize: Double {
+        didSet { save(sensorIconSize, Key.sensorIconSize) }
+    }
+
+    /// Ten sizes, a point apart. The default is the fifth (`Key.sensorIconSize`). The largest still fits a menu bar without
+    /// a camera housing, which is thinner.
+    static let sensorIconSizes: ClosedRange<Double> = 10...19
+
+    /// The order of the sensors list, by `SensorRow.id`. Rows it doesn't name go at the end.
+    var sensorOrder: [String] {
+        didSet { defaults.set(sensorOrder, forKey: Key.sensorOrder) }
+    }
+
+    /// The rows the user took out of the sensors list, by `SensorRow.id`.
+    var hiddenSensors: Set<String> {
+        didSet { defaults.set(hiddenSensors.sorted(), forKey: Key.hiddenSensors) }
+    }
+
+    /// Whether the rows of the list that opens from the menu bar have an icon, as they do in the settings.
+    var showsSensorListIcons: Bool {
+        didSet { defaults.set(showsSensorListIcons, forKey: Key.showsSensorListIcons) }
+    }
+
+    /// How far back the history chart looks.
+    var historyRange: HistoryRange {
+        didSet { defaults.set(historyRange.rawValue, forKey: Key.historyRange) }
+    }
+
+    /// The profiles the user added, which come after `FanProfile.defaults`.
+    var customFanProfiles: [FanProfile] {
+        didSet { defaults.set(try? JSONEncoder().encode(customFanProfiles), forKey: Key.fanProfiles) }
+    }
+
+    var fanProfiles: [FanProfile] { FanProfile.defaults + customFanProfiles }
+
+    /// Who decides how fast the fans turn when CleanBar opens: `.automatic`, `.system` or a profile. Picking something else
+    /// for the moment doesn't change it (`FanController.mode`).
+    var fanDefaultMode: FanMode {
+        didSet { defaults.set(try? JSONEncoder().encode(fanDefaultMode), forKey: Key.fanDefaultMode) }
+    }
+
+    var fanRules: [FanRule] {
+        didSet { defaults.set(try? JSONEncoder().encode(fanRules), forKey: Key.fanRules) }
     }
 
     @ObservationIgnored private let defaults: UserDefaults
@@ -266,11 +366,13 @@ final class AppSettings {
         defaults.register(defaults: [
             Key.autoHide: true,
             Key.autoHideDelay: 8.0,
+            Key.sensorIconSize: 14.0,
         ])
         hiddenBundleIDs = Set(defaults.stringArray(forKey: Key.hiddenBundleIDs) ?? [])
         hiddenSystemItems = Set((defaults.stringArray(forKey: Key.hiddenSystemItems) ?? [])
             .compactMap(SystemMenuItem.init(identifier:))
             .filter(\.canBeHidden))
+        hidesSensorItem = defaults.bool(forKey: Key.hidesSensorItem)
         hidesNewIcons = defaults.bool(forKey: Key.hidesNewIcons)
         newIconsPlace = defaults.object(forKey: Key.newIconsPlace).flatMap(NewIconsPlace.init(propertyList:))
         knownBundleIDs = defaults.stringArray(forKey: Key.knownBundleIDs).map(Set.init)
@@ -284,6 +386,20 @@ final class AppSettings {
         autoHideDelay = Self.autoHideDelay(defaults.double(forKey: Key.autoHideDelay))
         hotKey = defaults.data(forKey: Key.hotKey).flatMap { try? JSONDecoder().decode(HotKeyCombo.self, from: $0) }
         appearance = defaults.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .system
+        showsSensors = defaults.bool(forKey: Key.showsSensors)
+        menuBarSensor = defaults.string(forKey: Key.menuBarSensor) ?? TemperatureSensor.cpuAverageID
+        sensorIconColor = (defaults.array(forKey: Key.sensorIconColor) as? [Double]).flatMap(Self.color(fromComponents:))
+        sensorIconSize = min(max(defaults.double(forKey: Key.sensorIconSize), Self.sensorIconSizes.lowerBound), Self.sensorIconSizes.upperBound)
+        sensorOrder = defaults.stringArray(forKey: Key.sensorOrder) ?? []
+        hiddenSensors = Set(defaults.stringArray(forKey: Key.hiddenSensors) ?? [])
+        showsSensorListIcons = defaults.bool(forKey: Key.showsSensorListIcons)
+        historyRange = HistoryRange(rawValue: defaults.integer(forKey: Key.historyRange)) ?? .hour
+        let customProfiles = defaults.data(forKey: Key.fanProfiles).flatMap { try? JSONDecoder().decode([FanProfile].self, from: $0) } ?? []
+        customFanProfiles = customProfiles
+        fanDefaultMode = defaults.data(forKey: Key.fanDefaultMode).flatMap { try? JSONDecoder().decode(FanMode.self, from: $0) } ?? .automatic
+        // Rules saved before the settings kept them from clashing may still do.
+        let savedRules = defaults.data(forKey: Key.fanRules).flatMap { try? JSONDecoder().decode([FanRule].self, from: $0) } ?? []
+        fanRules = FanRule.cleaned(savedRules, profiles: FanProfile.defaults + customProfiles)
         // CleanBar's own languages only: `stringArray(forKey:)` would fall back to the Mac's.
         let languages = defaults.persistentDomain(forName: Bundle.main.bundleIdentifier ?? "")?[Key.language] as? [String]
         language = languages.flatMap { Bundle.preferredLocalizations(from: AppLanguage.available, forPreferences: $0).first }
@@ -297,11 +413,22 @@ final class AppSettings {
         guard knownBundleIDs == nil || !new.isEmpty else { return [] }
         let known = (knownBundleIDs ?? []).union(seen)
         knownBundleIDs = known
-        // Not a preference, so there's nothing to broadcast.
         defaults.set(known.sorted(), forKey: Key.knownBundleIDs)
         return new
     }
 
+    /// A color as it's saved: its red, green, blue and alpha in sRGB.
+    private static func components(of color: NSColor) -> [Double]? {
+        color.usingColorSpace(.sRGB).map { [$0.redComponent, $0.greenComponent, $0.blueComponent, $0.alphaComponent] }
+    }
+
+    private static func color(fromComponents components: [Double]) -> NSColor? {
+        guard components.count == 4 else { return nil }
+        return NSColor(srgbRed: components[0], green: components[1], blue: components[2], alpha: components[3])
+    }
+
+    /// Stores a setting and broadcasts the change. Settings nothing in the menu bar depends on are written to `defaults`
+    /// directly instead.
     private func save(_ value: Any?, _ key: String) {
         defaults.set(value, forKey: key)
         NotificationCenter.default.post(name: Self.didChange, object: self)

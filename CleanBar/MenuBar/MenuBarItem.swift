@@ -61,11 +61,16 @@ nonisolated struct MenuBarItem: Identifiable, Hashable, Sendable {
     }
 
     /// Other apps' icons hide per app, which needs a bundle identifier. macOS's own icons hide one by one, but only
-    /// those its allowlist names, and never the clock. CleanBar's icon always stays.
+    /// those its allowlist names, and never the clock. CleanBar's temperature can hide, and CleanBar's icon always stays.
     var canBeHidden: Bool {
-        guard controlRole == nil else { return false }
+        guard controlRole == nil else { return controlRole == .sensors }
         guard isSystemItem else { return bundleID != nil }
         return systemItem?.canBeHidden == true
+    }
+
+    /// macOS keeps the clock and Control Center at the right end of the menu bar, whatever is dragged.
+    var canMoveInMenuBar: Bool {
+        systemItem != .clock && systemItem != .controlCenter
     }
 
     /// macOS only tells which app an icon belongs to when the app runs from /Applications, /Library or the system. Icons
@@ -86,11 +91,28 @@ nonisolated struct MenuBarItem: Identifiable, Hashable, Sendable {
 nonisolated struct OverflowButton: Sendable {
     let frame: CGRect
     let isOnScreen: Bool
+    /// Whether it's showing the items behind it, by its Accessibility identifier. Nil if macOS names it some other way.
+    var isExpanded: Bool?
+
+    /// Seen on macOS 27.2. They don't depend on the language, unlike its description.
+    private static let closedIdentifier = "menu-bar-overflow-indicator"
+    private static let expandedIdentifier = "menu-bar-overflow-indicator-expanded"
+
+    static func isExpanded(identifier: String?) -> Bool? {
+        switch identifier {
+        case closedIdentifier: false
+        case expandedIdentifier: true
+        default: nil
+        }
+    }
 }
 
 nonisolated struct MenuBarScan: Sendable {
     var items: [MenuBarItem]
     var overflowButton: OverflowButton?
+    /// The apps asked that answered they have no menu bar items, by bundle identifier. An app that didn't answer in time
+    /// is neither here nor in `items`.
+    var appsWithoutItems: Set<String> = []
 
     /// Turned off under System Settings → Menu Bar. macOS parks most such items outside the menu bar, but some keep a
     /// place in it without being drawn (seen with LuLu on macOS 27.0.1). Apps that hide their own item take it out of
@@ -110,10 +132,18 @@ nonisolated struct MenuBarScan: Sendable {
         return (button.minX - 1...button.maxX + 1).contains(item.frame.maxX)
     }
 
+    /// Whether « is there but isn't showing the items behind it. It's only there when some items don't fit. The items can't
+    /// tell: on macOS 27.2 an app with all its items behind a closed « reports none at all (the items that did report a
+    /// place stacked onto it were seen on macOS 27.0).
+    var isOverflowClosed: Bool {
+        overflowButton?.isOnScreen == true && !isOverflowOpen
+    }
+
     /// Whether « is showing the items behind it. They're then drawn left of it in its menu bar, in place of the app
     /// menus, and stay there until « is clicked again or one of them is dragged out.
     var isOverflowOpen: Bool {
         guard let overflowButton, overflowButton.isOnScreen else { return false }
+        if let isExpanded = overflowButton.isExpanded { return isExpanded }
         let button = overflowButton.frame
         let center = CGPoint(x: button.midX, y: button.midY)
         return items.contains { $0.isOnScreen && $0.frame.maxX <= button.minX && $0.strip?.frame.contains(center) == true }

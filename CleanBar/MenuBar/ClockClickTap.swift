@@ -2,14 +2,14 @@ import AppKit
 import os
 
 /// Keeps clicks on macOS's clock from reaching the menu bar while CleanBar hides icons, and hands them to CleanBar, which
-/// opens Notification Center itself (`MenuBarManager.openNotificationCenter`).
+/// opens Notification Center itself (`MenuBarManager.openNotificationCenter`): it pauses hiding and clicks the clock with
+/// a click of its own, marked as CleanBar's, which goes through.
 ///
 /// Notification Center only opens from the clock while hiding is paused, and macOS brings the hidden icons back for that
-/// moment. It takes the list back as soon as it has brought them all back, just as they start sliding in, unless it's
-/// busy with the click: the menu bar handles a click as a gesture, in several steps over its first tenth of a second.
-/// Seen on macOS 27.0.1: with no click steps while hiding was paused, the list came back 1 ms after the icons started
-/// sliding in; with one to four, 5–23 ms after, long enough to see them. So the click is taken out of the event stream,
-/// from the button going down until it comes up.
+/// moment. It takes the list back as soon as they're all back, unless the menu bar is still handling a click, which it
+/// does in several steps over a tenth of a second: then the icons stay long enough to be seen. So the user's click is
+/// taken out of the event stream, from the button going down until it comes up, and only CleanBar's reaches the clock:
+/// a click opens Notification Center or closes it, so two would undo each other.
 ///
 /// The tap runs on its own thread, so a busy main thread never holds up clicks.
 nonisolated final class ClockClickTap: @unchecked Sendable {
@@ -72,11 +72,17 @@ nonisolated final class ClockClickTap: @unchecked Sendable {
 
     /// Returns nil to take the event out of the stream.
     private func handle(_ type: CGEventType, _ event: CGEvent) -> Unmanaged<CGEvent>? {
-        switch type {
-        case .tapDisabledByTimeout, .tapDisabledByUserInput:
+        if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
             if let port {
                 CGEvent.tapEnable(tap: port, enable: true)
             }
+            return Unmanaged.passUnretained(event)
+        }
+        // CleanBar's own click on the clock goes through, and the user's click stays held until its button comes up.
+        guard event.getIntegerValueField(.eventSourceUserData) != ItemMover.eventMark else {
+            return Unmanaged.passUnretained(event)
+        }
+        switch type {
         case .leftMouseDown:
             let location = event.location
             let isOnClock = state.withLock { $0.clockFrame?.contains(location) ?? false }

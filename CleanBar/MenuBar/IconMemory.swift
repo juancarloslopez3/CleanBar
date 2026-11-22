@@ -10,6 +10,19 @@ import AppKit
 final class IconMemory {
     private var records: [String: Record] = [:]
     private var pictures: [String: ItemPicture] = [:]
+    /// Apps that said they had no icons when last asked, by bundle identifier. An app can take its icons away while it
+    /// runs, as when they're turned off in the app's own settings. Kept across launches: a hidden app that opens after
+    /// CleanBar can't say so again until it's let in (see `noteIcons`), so its old picture would come back as a ghost.
+    private var appsWithoutIcons = Set(UserDefaults.standard.stringArray(forKey: IconMemory.appsWithoutIconsKey) ?? []) {
+        didSet {
+            if appsWithoutIcons != oldValue {
+                UserDefaults.standard.set(appsWithoutIcons.sorted(), forKey: Self.appsWithoutIconsKey)
+            }
+        }
+    }
+    private static let appsWithoutIconsKey = "AppsWithoutIcons"
+    /// Apps that reported icons since they opened, by bundle identifier.
+    private var appsSeenWithIcons: Set<String> = []
     private var saveTask: Task<Void, Never>?
 
     init() {
@@ -20,7 +33,8 @@ final class IconMemory {
     /// bar do their places give the icons' order, and do icons that aren't drawn show which ones are turned off.
     func remember(_ scan: MenuBarScan, pictures newPictures: [String: ItemPicture], isFullMenuBar: Bool) {
         var changed = false
-        for item in scan.items where item.controlRole == nil {
+        // CleanBar's icon never hides, but its temperature does, and the floating bar puts it in menu bar order.
+        for item in scan.items where item.controlRole != .icon {
             let key = item.placeKey
             if item.isOnScreen {
                 var record = Record(item)
@@ -38,7 +52,7 @@ final class IconMemory {
                     records[key] = record
                     changed = true
                 }
-            } else if isFullMenuBar, scan.isTurnedOff(item), records[key]?.isTurnedOff != true {
+            } else if isFullMenuBar, item.controlRole == nil, scan.isTurnedOff(item), records[key]?.isTurnedOff != true {
                 var record = records[key] ?? Record(item)
                 record.isTurnedOff = true
                 records[key] = record
@@ -80,20 +94,48 @@ final class IconMemory {
         }
     }
 
-    /// Whether CleanBar has seen any of the app's icons: has a picture of one, or found it turned off.
-    func knowsIcons(ofApp bundleID: String) -> Bool {
-        records.contains { key, record in
-            record.bundleID == bundleID && (record.isTurnedOff || pictures[key] != nil)
+    /// Whether CleanBar has seen any of the app's icons: has a picture of one, or found it turned off. `needsPicture`:
+    /// false to count an icon seen without a picture too, for when CleanBar isn't allowed to take any. Not for an app
+    /// that last said it had none: it may have icons again, so it's let in once to find out.
+    func knowsIcons(ofApp bundleID: String, needsPicture: Bool = true) -> Bool {
+        !appsWithoutIcons.contains(bundleID) && records.contains { key, record in
+            record.bundleID == bundleID && (!needsPicture || record.isTurnedOff || pictures[key] != nil)
         }
     }
 
-    /// The remembered icons of these apps, as items of the apps as they run now. macOS's own icons go with its menu bar
-    /// process.
+    /// The remembered icons of these apps, as items of the apps as they run now, leaving out apps that had no icons when
+    /// last asked. macOS's own icons go with its menu bar process. CleanBar's own temperature isn't among them: only its
+    /// place is remembered, since CleanBar knows what it looks like now.
     func items(of apps: [ScanTarget]) -> [MenuBarItem] {
         let appsByBundleID = Dictionary(apps.compactMap { app in app.bundleID.map { ($0, app) } }) { first, _ in first }
+        let own = Bundle.main.bundleIdentifier
         return records.values.compactMap { record in
-            record.bundleID.flatMap { appsByBundleID[$0] }.map(record.item)
+            guard record.bundleID != own else { return nil }
+            return record.bundleID.flatMap { appsWithoutIcons.contains($0) ? nil : appsByBundleID[$0] }.map(record.item)
         }
+    }
+
+    /// Takes in which of the apps in the scan have icons now. macOS's own icons leave the
+    /// Accessibility tree while they're hidden, so their absence says nothing.
+    ///
+    /// Nor does it from an app in `keptOut`, whose icons macOS's list keeps out of the menu bar, unless the app reported
+    /// icons before: on macOS 27.2 an icon that was never drawn doesn't exist for Accessibility, so the app answers as if
+    /// it had none. Once drawn, an icon stays in the tree while it's hidden (seen after less than a second in the menu
+    /// bar).
+    func noteIcons(in scan: MenuBarScan, keptOut: Set<String>) {
+        let reporting = scan.items.compactMap(\.bundleID)
+        appsSeenWithIcons.formUnion(reporting)
+        appsWithoutIcons.subtract(reporting)
+        for app in scan.appsWithoutItems.subtracting(MenuBarItem.systemBundleIDs)
+        where !keptOut.contains(app) || appsSeenWithIcons.contains(app) {
+            appsWithoutIcons.insert(app)
+        }
+    }
+
+    /// These apps just opened, so whether they reported icons is out of date. Apps that had none stay that way until
+    /// they report some: a hidden one is let in to find out (`knowsIcons`).
+    func noteLaunch(of bundleIDs: [String]) {
+        appsSeenWithIcons.subtract(bundleIDs)
     }
 
     // MARK: Keeping it

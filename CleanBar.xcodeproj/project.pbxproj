@@ -6,8 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C1EA0B0000000000000000B0 /* com.cleanbar.CleanBar.FanHelper in Embed Fan Helper */ = {isa = PBXBuildFile; fileRef = C1EA0B0000000000000000B1 /* com.cleanbar.CleanBar.FanHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C1EA0B0000000000000000B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1EA0B0000000000000000AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C1EA0B0000000000000000B3;
+			remoteInfo = FanHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C1EA0B0000000000000000B4 /* Embed Fan Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				C1EA0B0000000000000000B0 /* com.cleanbar.CleanBar.FanHelper in Embed Fan Helper */,
+			);
+			name = "Embed Fan Helper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		C1EA0B0000000000000000A1 /* CleanBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1EA0B0000000000000000B1 /* com.cleanbar.CleanBar.FanHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.cleanbar.CleanBar.FanHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +45,27 @@
 			path = CleanBar;
 			sourceTree = "<group>";
 		};
+		C1EA0B0000000000000000B5 /* FanHelper */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FanHelper;
+			sourceTree = "<group>";
+		};
+		C1EA0B0000000000000000B6 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C1EA0B0000000000000000A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C1EA0B0000000000000000B9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				C1EA0B0000000000000000A2 /* CleanBar */,
+				C1EA0B0000000000000000B5 /* FanHelper */,
+				C1EA0B0000000000000000B6 /* Shared */,
 				C1EA0B0000000000000000A5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				C1EA0B0000000000000000A1 /* CleanBar.app */,
+				C1EA0B0000000000000000B1 /* com.cleanbar.CleanBar.FanHelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,13 +104,16 @@
 				C1EA0B0000000000000000A8 /* Sources */,
 				C1EA0B0000000000000000A3 /* Frameworks */,
 				C1EA0B0000000000000000A9 /* Resources */,
+				C1EA0B0000000000000000B4 /* Embed Fan Helper */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C1EA0B0000000000000000BA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C1EA0B0000000000000000A2 /* CleanBar */,
+				C1EA0B0000000000000000B6 /* Shared */,
 			);
 			name = CleanBar;
 			packageProductDependencies = (
@@ -69,6 +121,28 @@
 			productName = CleanBar;
 			productReference = C1EA0B0000000000000000A1 /* CleanBar.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C1EA0B0000000000000000B3 /* FanHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C1EA0B0000000000000000B7 /* Build configuration list for PBXNativeTarget "FanHelper" */;
+			buildPhases = (
+				C1EA0B0000000000000000B8 /* Sources */,
+				C1EA0B0000000000000000B9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C1EA0B0000000000000000B5 /* FanHelper */,
+				C1EA0B0000000000000000B6 /* Shared */,
+			);
+			name = FanHelper;
+			packageProductDependencies = (
+			);
+			productName = FanHelper;
+			productReference = C1EA0B0000000000000000B1 /* com.cleanbar.CleanBar.FanHelper */;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -78,9 +152,12 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2700;
-				LastUpgradeCheck = 2700;
+				LastUpgradeCheck = 2720;
 				TargetAttributes = {
 					C1EA0B0000000000000000A6 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					C1EA0B0000000000000000B3 = {
 						CreatedOnToolsVersion = 27.0;
 					};
 				};
@@ -101,6 +178,7 @@
 			projectRoot = "";
 			targets = (
 				C1EA0B0000000000000000A6 /* CleanBar */,
+				C1EA0B0000000000000000B3 /* FanHelper */,
 			);
 		};
 /* End PBXProject section */
@@ -123,19 +201,53 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C1EA0B0000000000000000B8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C1EA0B0000000000000000BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C1EA0B0000000000000000B3 /* FanHelper */;
+			targetProxy = C1EA0B0000000000000000B2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C1EA0B0000000000000000AC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -144,15 +256,23 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -162,12 +282,31 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -175,9 +314,17 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -204,7 +351,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cleanbar.CleanBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -233,12 +380,46 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cleanbar.CleanBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		C1EA0B0000000000000000BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MARKETING_VERSION = 1.1;
+				OTHER_CODE_SIGN_FLAGS = "--identifier com.cleanbar.CleanBar.FanHelper";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleanbar.CleanBar.FanHelper;
+				PRODUCT_NAME = com.cleanbar.CleanBar.FanHelper;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		C1EA0B0000000000000000BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MARKETING_VERSION = 1.1;
+				OTHER_CODE_SIGN_FLAGS = "--identifier com.cleanbar.CleanBar.FanHelper";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleanbar.CleanBar.FanHelper;
+				PRODUCT_NAME = com.cleanbar.CleanBar.FanHelper;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
@@ -260,6 +441,15 @@
 			buildConfigurations = (
 				C1EA0B0000000000000000AC /* Debug */,
 				C1EA0B0000000000000000AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C1EA0B0000000000000000B7 /* Build configuration list for PBXNativeTarget "FanHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C1EA0B0000000000000000BB /* Debug */,
+				C1EA0B0000000000000000BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
